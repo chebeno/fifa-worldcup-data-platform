@@ -1,0 +1,76 @@
+{
+	"name": "ds_config_main_pl",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sadatamaieutic_dev",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "ds_fifa_worldcup"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"pipeline_config": {
+					"type": "object",
+					"properties": {
+						"version": {
+							"type": "string"
+						},
+						"source_base_url": {
+							"type": "string"
+						},
+						"github_api_base": {
+							"type": "string"
+						},
+						"adls_container": {
+							"type": "string"
+						},
+						"adls_base_path": {
+							"type": "string"
+						},
+						"log_path": {
+							"type": "string"
+						},
+						"parallelism": {
+							"type": "integer"
+						}
+					}
+				},
+				"datasets": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "string"
+							},
+							"filename": {
+								"type": "string"
+							},
+							"category": {
+								"type": "string"
+							},
+							"target_folder": {
+								"type": "string"
+							},
+							"active": {
+								"type": "boolean"
+							},
+							"last_sha": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
