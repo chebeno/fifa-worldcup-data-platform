@@ -1,7 +1,0 @@
-{
-	"name": "shir-vb-datamaieutic",
-	"properties": {
-		"type": "SelfHosted",
-		"description": "this shir is hosted on virtualbox installed in my macbook Pro"
-	}
-}
