@@ -1,0 +1,15 @@
+{
+	"name": "adf-datamaieutic-dev",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "canadacentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "REDACTED-PRINCIPAL-ID",
+		"tenantId": "REDACTED-TENANT-ID"
+	}
+}
