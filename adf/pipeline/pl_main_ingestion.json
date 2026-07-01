@@ -159,32 +159,6 @@
 				}
 			},
 			{
-				"name": "SET_Parallelism",
-				"type": "SetVariable",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
-				"dependsOn": [
-					{
-						"activity": "SET_LogPath",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "parallelism",
-					"value": {
-						"value": "@string(activity('reading config file').output.firstRow.pipeline_config.parallelism)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "SET_adls_container",
 				"type": "SetVariable",
 				"dependsOn": [
