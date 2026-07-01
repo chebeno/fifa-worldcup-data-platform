@@ -36,12 +36,35 @@
 							"filename": "main_ingestion_fifa_worldcup.json"
 						}
 					},
-					"firstRowOnly": false
+					"firstRowOnly": true
 				}
 			},
 			{
-				"name": "ForEach1",
-				"type": "ForEach",
+				"name": "WebHook1",
+				"type": "WebHook",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [
+					{
+						"activity": "reading config file",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"timeout": "00:10:00"
+				}
+			},
+			{
+				"name": "SET_SourceBaseUrl",
+				"type": "SetVariable",
 				"dependsOn": [
 					{
 						"activity": "reading config file",
@@ -50,22 +73,205 @@
 						]
 					}
 				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
-					"activities": [
-						{
-							"name": "Wait1",
-							"type": "Wait",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"waitTimeInSeconds": 2
-							}
-						}
-					]
+					"variableName": "source_base_url",
+					"value": {
+						"value": "@activity('reading config file').output.firstRow.pipeline_config.source_base_url",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SET_GithubApiBase",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "SET_SourceBaseUrl",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "github_api_base",
+					"value": {
+						"value": "@activity('reading config file').output.firstRow.pipeline_config.github_api_base",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SET_AdlsBasePath",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "SET_adls_container",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "adls_base_path",
+					"value": {
+						"value": "@activity('reading config file').output.firstRow.pipeline_config.adls_base_path",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SET_LogPath",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "SET_AdlsBasePath",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "log_path",
+					"value": {
+						"value": "@activity('reading config file').output.firstRow.pipeline_config.log_path",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SET_Parallelism",
+				"type": "SetVariable",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [
+					{
+						"activity": "SET_LogPath",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "parallelism",
+					"value": {
+						"value": "@string(activity('reading config file').output.firstRow.pipeline_config.parallelism)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SET_adls_container",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "SET_GithubApiBase",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "adls_container",
+					"value": {
+						"value": "@activity('reading config file').output.firstRow.pipeline_config.adls_container",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ACT_ForEachDataset",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "ACT_FilterActive",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('ACT_FilterActive').output.value",
+						"type": "Expression"
+					},
+					"batchCount": 5
+				}
+			},
+			{
+				"name": "ACT_FilterActive",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "SET_LogPath",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('reading config file').output.firstRow.datasets",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().active, true)",
+						"type": "Expression"
+					}
 				}
 			}
 		],
+		"variables": {
+			"source_base_url": {
+				"type": "String"
+			},
+			"github_api_base": {
+				"type": "String"
+			},
+			"adls_container": {
+				"type": "String"
+			},
+			"adls_base_path": {
+				"type": "String"
+			},
+			"log_path": {
+				"type": "String"
+			},
+			"parallelism": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "pl_fifa_worldcup"
 		},
