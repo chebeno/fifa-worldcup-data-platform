@@ -225,7 +225,18 @@
 						"value": "@activity('ACT_FilterActive').output.value",
 						"type": "Expression"
 					},
-					"batchCount": 5
+					"batchCount": 5,
+					"activities": [
+						{
+							"name": "Wait1",
+							"type": "Wait",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 2
+							}
+						}
+					]
 				}
 			},
 			{
