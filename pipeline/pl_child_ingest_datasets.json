@@ -1,0 +1,32 @@
+{
+	"name": "pl_child_ingest_datasets",
+	"properties": {
+		"parameters": {
+			"p_filename": {
+				"type": "string"
+			},
+			"p_category": {
+				"type": "string"
+			},
+			"p_target_folder": {
+				"type": "string"
+			},
+			"p_last_sha": {
+				"type": "string"
+			},
+			"p_source_base_url": {
+				"type": "string"
+			},
+			"p_github_api_base": {
+				"type": "string"
+			},
+			"p_adls_base_path": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "pl_fifa_worldcup"
+		},
+		"annotations": []
+	}
+}
