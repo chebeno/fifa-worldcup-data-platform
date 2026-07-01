@@ -22,6 +22,12 @@
 			},
 			"p_adls_base_path": {
 				"type": "string"
+			},
+			"p_id": {
+				"type": "string"
+			},
+			"p_log_path": {
+				"type": "string"
 			}
 		},
 		"folder": {
