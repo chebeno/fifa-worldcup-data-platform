@@ -43,8 +43,31 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "",
-					"value": ""
+					"variableName": "currentETag",
+					"value": {
+						"value": "@replace(replace(activity('ACT_GetRawETag').output.ADFWebActivityResponseHeaders.ETag, 'W/', ''), '\"', '')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ACT_CheckETag",
+				"description": "On compare l'ETag normalisé courant (currentETag) à la valeur stockée au dernier run (p_last_sha). not(equals(...)) s'active quand ils diffèrent → fichier modifié → branche True → copie.",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "SET_CurrentETag",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@not(equals(variables('currentETag'), pipeline().parameters.p_last_etag))",
+						"type": "Expression"
+					}
 				}
 			}
 		],
@@ -58,7 +81,7 @@
 			"p_target_folder": {
 				"type": "string"
 			},
-			"p_last_sha": {
+			"p_last_etag": {
 				"type": "string"
 			},
 			"p_source_base_url": {
@@ -75,9 +98,11 @@
 			},
 			"p_log_path": {
 				"type": "string"
-			},
+			}
+		},
+		"variables": {
 			"currentETag": {
-				"type": "string"
+				"type": "String"
 			}
 		},
 		"folder": {
