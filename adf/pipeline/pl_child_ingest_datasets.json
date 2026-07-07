@@ -72,7 +72,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@not(equals(variables('currentETag'), pipeline().parameters.p_last_etag))",
+						"value": "@not(equals(variables('currentETag'), variables('lastETag')))",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
