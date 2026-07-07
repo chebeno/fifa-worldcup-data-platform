@@ -207,6 +207,136 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "ACT_CheckLogExists",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_log_filestatus",
+						"type": "DatasetReference",
+						"parameters": {
+							"ds_log_filename": {
+								"value": "@concat(pipeline().parameters.p_id, '.json')",
+								"type": "Expression"
+							}
+						}
+					},
+					"fieldList": [],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "JsonReadSettings"
+					}
+				}
+			},
+			{
+				"name": "ACT_IfLogExists",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "ACT_CheckLogExists",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@activity('ACT_CheckLogExists').output.exists",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "SET_LastETag_Empty",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "lastETag",
+								"value": "''"
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "ACT_ReadLog",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "JsonSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "JsonReadSettings"
+									}
+								},
+								"dataset": {
+									"referenceName": "ds_log_filestatus",
+									"type": "DatasetReference",
+									"parameters": {
+										"ds_log_filename": {
+											"value": "@concat(pipeline().parameters.p_id, '.json')",
+											"type": "Expression"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "SET_LastETag_FromLog",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "ACT_ReadLog",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "lastETag",
+								"value": {
+									"value": "@coalesce(activity('ACT_ReadLog').output.firstRow.etag, '')",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
 			}
 		],
 		"parameters": {
