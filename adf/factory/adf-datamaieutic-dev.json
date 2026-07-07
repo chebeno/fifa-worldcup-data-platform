@@ -1,6 +1,12 @@
 {
 	"name": "adf-datamaieutic-dev",
 	"properties": {
+		"globalParameters": {
+			"p_sadls_datamaieutic_dev": {
+				"type": "string",
+				"value": "staging"
+			}
+		},
 		"trustModeClaimForMi": {
 			"value": "Disabled",
 			"editable": true
