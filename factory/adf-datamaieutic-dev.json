@@ -9,6 +9,10 @@
 			"p_storage_resource": {
 				"type": "string",
 				"value": "https://storage.azure.com"
+			},
+			"p_sadls_container_datamaieutic_dev": {
+				"type": "string",
+				"value": "staging"
 			}
 		},
 		"trustModeClaimForMi": {
