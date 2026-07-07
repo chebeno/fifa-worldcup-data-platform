@@ -199,6 +199,7 @@
 						"value": "@activity('ACT_FilterActive').output.value",
 						"type": "Expression"
 					},
+					"isSequential": false,
 					"batchCount": 5,
 					"activities": [
 						{
@@ -228,10 +229,6 @@
 										"value": "@item().target_folder",
 										"type": "Expression"
 									},
-									"p_last_sha": {
-										"value": "@item().last_sha",
-										"type": "Expression"
-									},
 									"p_source_base_url": {
 										"value": "@variables('source_base_url')",
 										"type": "Expression"
@@ -252,6 +249,42 @@
 										"value": "@variables('log_path')",
 										"type": "Expression"
 									}
+								}
+							}
+						},
+						{
+							"name": "ACT_CheckLogExists",
+							"description": "Cette activité interroge le système de fichiers et retourne des métadonnées sur un chemin sans lire le contenu. Parmi les métadonnées disponibles, celle qui nous intéresse est exists : un booléen qui vaut true si le chemin existe, false sinon",
+							"type": "GetMetadata",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "ds_log_filestatus",
+									"type": "DatasetReference",
+									"parameters": {
+										"ds_log_filename": {
+											"value": "@concat(item().id, '.json')",
+											"type": "Expression"
+										}
+									}
+								},
+								"fieldList": [
+									"exists"
+								],
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
 								}
 							}
 						}
