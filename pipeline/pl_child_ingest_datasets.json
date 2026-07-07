@@ -1,6 +1,31 @@
 {
 	"name": "pl_child_ingest_datasets",
 	"properties": {
+		"activities": [
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"headers": {
+						"User-Agent": " datamaieutic-adf"
+					},
+					"url": {
+						"value": "@concat(pipeline().parameters.p_source_base_url,'/',pipeline().parameters.p_filename)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
 		"parameters": {
 			"p_filename": {
 				"type": "string"
