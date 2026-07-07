@@ -70,7 +70,7 @@
 					},
 					"ifTrueActivities": [
 						{
-							"name": "Copy data1",
+							"name": "ACT_CopyData",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -82,8 +82,61 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"enableStaging": false
-							}
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"requestMethod": "GET"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_githubraw_source_files",
+									"type": "DatasetReference",
+									"parameters": {
+										"ds_relative_url": {
+											"value": "@concat('/jfjelstul/worldcup/master/data-csv/', pipeline().parameters.p_filename)",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_adls_sink_files",
+									"type": "DatasetReference",
+									"parameters": {
+										"ds_folder": {
+											"value": "@concat(pipeline().parameters.p_adls_base_path,'/',pipeline().parameters.p_target_folder,'/',formatDateTime(utcNow(),'yyyy-MM-dd'))",
+											"type": "Expression"
+										}
+									}
+								}
+							]
 						}
 					]
 				}
