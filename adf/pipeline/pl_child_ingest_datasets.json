@@ -241,6 +241,9 @@
 			},
 			"sinkFilePath": {
 				"type": "String"
+			},
+			"lastETag": {
+				"type": "String"
 			}
 		},
 		"folder": {
