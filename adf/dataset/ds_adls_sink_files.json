@@ -1,0 +1,41 @@
+{
+	"name": "ds_adls_sink_files",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sadatamaieutic_dev",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"ds_folder": {
+				"type": "string"
+			},
+			"ds_file": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "ds_fifa_worldcup/sink"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().ds_file",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().ds_folder",
+					"type": "Expression"
+				},
+				"fileSystem": "staging"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
