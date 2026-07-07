@@ -425,7 +425,7 @@
 													"type": "Expression"
 												},
 												"p_source_base_url": {
-													"value": "@variables('adls_base_path')",
+													"value": "@variables('source_base_url')",
 													"type": "Expression"
 												},
 												"p_adls_base_path": {
