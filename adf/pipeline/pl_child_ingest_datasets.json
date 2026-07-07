@@ -175,7 +175,7 @@
 									"Content-Type": "application/json"
 								},
 								"url": {
-									"value": "@concat('https://redactedstorage.dfs.core.windows.net/staging/fifa_worldcup/logs/', pipeline().parameters.p_id, '.json')",
+									"value": "@concat('https://redactedstorage.dfs.core.windows.net/staging/logs/', pipeline().parameters.p_id, '.json')",
 									"type": "Expression"
 								},
 								"body": {
