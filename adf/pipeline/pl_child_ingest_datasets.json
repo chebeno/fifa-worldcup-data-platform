@@ -89,7 +89,7 @@
 							],
 							"policy": {
 								"timeout": "0.12:00:00",
-								"retry": 0,
+								"retry": 2,
 								"retryIntervalInSeconds": 30,
 								"secureOutput": false,
 								"secureInput": false
@@ -209,6 +209,48 @@
 								"value": {
 									"value": "@concat(pipeline().parameters.p_adls_base_path, '/',\n                pipeline().parameters.p_target_folder, '/',\n                formatDateTime(utcNow(),'yyyy-MM-dd'), '/',\n                pipeline().parameters.p_filename)",
 									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "ACT_LogFailed_Copy",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "ACT_CopyData",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "PUT",
+								"headers": {
+									"x-ms-blob-type": "BlockBlob",
+									"Content-Type": "application/json"
+								},
+								"url": {
+									"value": "@concat(pipeline().globalParameters.p_sadls_datamaieutic_dev,'/',pipeline().globalParameters.p_sadls_container_datamaieutic_dev,'/logs/', pipeline().parameters.p_id, '.json')",
+									"type": "Expression"
+								},
+								"body": {
+									"value": "@json(concat('{',\n  '\"dataset_id\":\"',    pipeline().parameters.p_id, '\",',\n  '\"status\":\"FAILED\",',\n  '\"etag\":\"',          variables('lastETag'), '\",',\n  '\"rejected_etag\":\"', variables('currentETag'), '\",',\n  '\"rows_copied\":0,',\n  '\"file_path\":\"\",',\n  '\"error_message\":\"',\n      replace(\n        replace(\n          replace(\n            coalesce(activity('ACT_CopyData').error?.message, 'Unknown error'),\n          '\\\\', '\\\\\\\\'),\n        '\"', '\\\"'),\n      decodeUriComponent('%0A'), ' '),\n  '\",',\n  '\"failed_activity\":\"ACT_CopyData\",',\n  '\"run_timestamp\":\"', utcNow(), '\",',\n  '\"run_id\":\"',        pipeline().RunId, '\"',\n'}'))",
+									"type": "Expression"
+								},
+								"authentication": {
+									"type": "MSI",
+									"resource": {
+										"value": "@pipeline().globalParameters.p_storage_resource",
+										"type": "Expression"
+									}
 								}
 							}
 						}
@@ -363,7 +405,29 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"method": "PUT",
+					"headers": {
+						"x-ms-blob-type": "BlockBlob",
+						"Content-Type": "application/json"
+					},
+					"url": {
+						"value": "@concat(pipeline().globalParameters.p_sadls_datamaieutic_dev,'/',pipeline().globalParameters.p_sadls_container_datamaieutic_dev,'/logs/', pipeline().parameters.p_id, '.json')",
+						"type": "Expression"
+					},
+					"body": {
+						"value": "@json(concat('{',\n  '\"dataset_id\":\"',    pipeline().parameters.p_id, '\",',\n  '\"status\":\"FAILED\",',\n  '\"etag\":\"',          variables('lastETag'), '\",',\n  '\"rows_copied\":0,',\n  '\"file_path\":\"\",',\n  '\"error_message\":\"',\n      replace(\n        replace(\n          replace(\n            coalesce(activity('ACT_GetRawETag').error?.message, 'Unknown error'),\n          '\\\\', '\\\\\\\\'),\n        '\"', '\\\"'),\n      decodeUriComponent('%0A'), ' '),\n  '\",',\n  '\"failed_activity\":\"ACT_GetRawETag\",',\n  '\"run_timestamp\":\"', utcNow(), '\",',\n  '\"run_id\":\"',        pipeline().RunId, '\"',\n'}'))",
+						"type": "Expression"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": {
+							"value": "@pipeline().globalParameters.p_storage_resource",
+							"type": "Expression"
+						}
+					}
+				}
 			}
 		],
 		"parameters": {
