@@ -3,7 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Web1",
+				"name": "ACT_GetRawETag",
+				"description": "Fetching the Etag of each file to capture changes",
 				"type": "WebActivity",
 				"dependsOn": [],
 				"policy": {
@@ -52,6 +53,9 @@
 				"type": "string"
 			},
 			"p_log_path": {
+				"type": "string"
+			},
+			"currentETag": {
 				"type": "string"
 			}
 		},
