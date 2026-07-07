@@ -203,59 +203,11 @@
 					"batchCount": 5,
 					"activities": [
 						{
-							"name": "ACT_ExecuteChild",
-							"type": "ExecutePipeline",
-							"dependsOn": [],
-							"policy": {
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "pl_child_ingest_datasets",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true,
-								"parameters": {
-									"p_filename": {
-										"value": "@item().filename",
-										"type": "Expression"
-									},
-									"p_category": {
-										"value": "@item().category",
-										"type": "Expression"
-									},
-									"p_target_folder": {
-										"value": "@item().target_folder",
-										"type": "Expression"
-									},
-									"p_source_base_url": {
-										"value": "@variables('source_base_url')",
-										"type": "Expression"
-									},
-									"p_github_api_base": {
-										"value": "@variables('github_api_base')",
-										"type": "Expression"
-									},
-									"p_adls_base_path": {
-										"value": "@variables('adls_base_path')",
-										"type": "Expression"
-									},
-									"p_id": {
-										"value": "@item().id",
-										"type": "Expression"
-									},
-									"p_log_path": {
-										"value": "@variables('log_path')",
-										"type": "Expression"
-									}
-								}
-							}
-						},
-						{
 							"name": "ACT_CheckLogExists",
 							"description": "Cette activité interroge le système de fichiers et retourne des métadonnées sur un chemin sans lire le contenu. Parmi les métadonnées disponibles, celle qui nous intéresse est exists : un booléen qui vaut true si le chemin existe, false sinon",
 							"type": "GetMetadata",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [],
 							"policy": {
 								"timeout": "0.12:00:00",
@@ -291,6 +243,8 @@
 						{
 							"name": "ACT_IfLogExists",
 							"type": "IfCondition",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "ACT_CheckLogExists",
@@ -420,10 +374,6 @@
 													"value": "@item().target_forlder",
 													"type": "Expression"
 												},
-												"p_last_etag": {
-													"value": "@coalesce(activity('ACT_ReadLog').output.firstRow.etag, '')",
-													"type": "Expression"
-												},
 												"p_source_base_url": {
 													"value": "@variables('source_base_url')",
 													"type": "Expression"
@@ -436,6 +386,22 @@
 										}
 									}
 								]
+							}
+						},
+						{
+							"name": "ACT_ExecuteChild",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pl_child_ingest_datasets",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
 							}
 						}
 					]
