@@ -4,7 +4,7 @@
 		"globalParameters": {
 			"p_sadls_datamaieutic_dev": {
 				"type": "string",
-				"value": "staging"
+				"value": "https://redactedstorage.dfs.core.windows.net"
 			},
 			"p_storage_resource": {
 				"type": "string",
