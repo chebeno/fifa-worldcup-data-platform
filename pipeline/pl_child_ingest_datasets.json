@@ -6,7 +6,14 @@
 				"name": "ACT_GetRawETag",
 				"description": "Fetching the Etag of each file to capture changes",
 				"type": "WebActivity",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "ACT_IfLogExists",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
