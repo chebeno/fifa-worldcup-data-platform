@@ -25,6 +25,27 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "SET_CurrentETag",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ACT_GetRawETag",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "",
+					"value": ""
+				}
 			}
 		],
 		"parameters": {
