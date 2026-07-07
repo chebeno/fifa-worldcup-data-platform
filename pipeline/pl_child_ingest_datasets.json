@@ -219,9 +219,6 @@
 			"p_target_folder": {
 				"type": "string"
 			},
-			"p_last_etag": {
-				"type": "string"
-			},
 			"p_source_base_url": {
 				"type": "string"
 			},
