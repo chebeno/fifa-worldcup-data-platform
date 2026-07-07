@@ -1,0 +1,25 @@
+{
+	"name": "ds_fifa_worldcup_files",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_httpserver_git_base_url",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "ds_fifa_worldcup"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": "@concat(pipeline().parameters.p_source_base_url, '/', pipeline().parameters.p_filename)"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
