@@ -81,7 +81,7 @@
 				"typeProperties": {
 					"variableName": "source_base_url",
 					"value": {
-						"value": "@activity('reading config file').output.firstRow.pipeline_config.source_base_url",
+						"value": "@activity('ACT_ReadConfig').output.firstRow.pipeline_config.source_base_url",
 						"type": "Expression"
 					}
 				}
@@ -105,7 +105,7 @@
 				"typeProperties": {
 					"variableName": "github_api_base",
 					"value": {
-						"value": "@activity('reading config file').output.firstRow.pipeline_config.github_api_base",
+						"value": "@activity('ACT_ReadConfig').output.firstRow.pipeline_config.github_api_base",
 						"type": "Expression"
 					}
 				}
@@ -129,7 +129,7 @@
 				"typeProperties": {
 					"variableName": "adls_base_path",
 					"value": {
-						"value": "@activity('reading config file').output.firstRow.pipeline_config.adls_base_path",
+						"value": "@activity('ACT_ReadConfig').output.firstRow.pipeline_config.adls_base_path",
 						"type": "Expression"
 					}
 				}
@@ -153,7 +153,7 @@
 				"typeProperties": {
 					"variableName": "log_path",
 					"value": {
-						"value": "@activity('reading config file').output.firstRow.pipeline_config.log_path",
+						"value": "@activity('ACT_ReadConfig').output.firstRow.pipeline_config.log_path",
 						"type": "Expression"
 					}
 				}
@@ -177,7 +177,7 @@
 				"typeProperties": {
 					"variableName": "adls_container",
 					"value": {
-						"value": "@activity('reading config file').output.firstRow.pipeline_config.adls_container",
+						"value": "@activity('ACT_ReadConfig').output.firstRow.pipeline_config.adls_container",
 						"type": "Expression"
 					}
 				}
@@ -455,7 +455,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('reading config file').output.firstRow.datasets",
+						"value": "@activity('ACT_ReadConfig').output.firstRow.datasets",
 						"type": "Expression"
 					},
 					"condition": {
