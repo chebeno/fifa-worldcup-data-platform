@@ -218,7 +218,8 @@
 								"method": "PUT",
 								"headers": {
 									"x-ms-blob-type": "BlockBlob",
-									"Content-Type": "application/json"
+									"Content-Type": "application/json",
+									"Content-Length": "0"
 								},
 								"url": {
 									"value": "@concat('https://redactedstorage.dfs.core.windows.net/staging/logs/', pipeline().parameters.p_id, '.json')",
