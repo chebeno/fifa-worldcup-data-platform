@@ -26,7 +26,7 @@
 					"method": "GET",
 					"headers": {
 						"User-Agent": " datamaieutic-adf",
-						"x-ms-version": "2021-10-04"
+						"Accept": "application/json"
 					},
 					"url": {
 						"value": "@concat(pipeline().parameters.p_source_base_url,'/',pipeline().parameters.p_filename)",
