@@ -424,7 +424,7 @@
 							"typeProperties": {
 								"variableName": "lastETag",
 								"value": {
-									"value": "@coalesce(activity('ACT_ReadLog').output.firstRow.etag, '')",
+									"value": "@coalesce(activity('ACT_ReadLog').output?.firstRow?.etag, '')",
 									"type": "Expression"
 								}
 							}
