@@ -78,6 +78,7 @@
 					"ifFalseActivities": [
 						{
 							"name": "ACT_LogSkipped",
+							"description": "Cette activité prouve que rien ne s'est passé. Un INGESTED prouve une copie. Un FAILED prouve un incident. Un SKIPPED prouve que le pipeline a vérifié et choisi de ne rien faire.",
 							"type": "WebActivity",
 							"dependsOn": [],
 							"policy": {
