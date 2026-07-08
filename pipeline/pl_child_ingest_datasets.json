@@ -75,6 +75,38 @@
 						"value": "@not(equals(variables('currentETag'), variables('lastETag')))",
 						"type": "Expression"
 					},
+					"ifFalseActivities": [
+						{
+							"name": "ACT_LogSkipped",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 1,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "PUT",
+								"headers": {
+									"x-ms-blob-type": "BlockBlob"
+								},
+								"url": {
+									"value": "@concat(pipeline().globalParameters.p_sadls_datamaieutic_dev,'/',pipeline().globalParameters.p_sadls_container_datamaieutic_dev,'/logs/',pipeline().parameters.p_id,'.json')",
+									"type": "Expression"
+								},
+								"authentication": {
+									"type": "MSI",
+									"resource": {
+										"value": "@pipeline().globalParameters.p_storage_resource",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					],
 					"ifTrueActivities": [
 						{
 							"name": "ACT_CopyData",
