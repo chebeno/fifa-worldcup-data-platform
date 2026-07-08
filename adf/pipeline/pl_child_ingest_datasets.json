@@ -226,7 +226,7 @@
 									"type": "Expression"
 								},
 								"body": {
-									"value": "@json(concat('{',\n    '\"dataset_id\":\"',    pipeline().parameters.p_id, '\",',\n    '\"status\":\"INGESTED\",',\n    '\"etag\":\"',          variables('currentETag'), '\",',\n    '\"rows_copied\":',     string(activity('ACT_CopyData').output?.rowsCopied), ',',\n    '\"file_path\":\"',     variables('sinkFilePath'), '\",',\n    '\"error_message\":\"\",',\n    '\"last_ingested_at\":\"', utcNow(), '\",',\n    '\"last_ingested_path\":\"', variables('sinkFilePath'), '\",',\n    '\"run_timestamp\":\"', utcNow(), '\",',\n    '\"run_id\":\"',        pipeline().RunId, '\"',\n  '}'))",
+									"value": "@json(concat('{',\n    '\"dataset_id\":\"',    pipeline().parameters.p_id, '\",',\n    '\"status\":\"INGESTED\",',\n    '\"etag\":\"',          variables('currentETag'), '\",',\n    '\"rows_copied\":',     string(activity('ACT_CopyData').output?.rowsCopied), ',',\n    '\"data_written_bytes\":', coalesce(string(activity('ACT_CopyData').output?.dataWritten), '0'), ',',\n    '\"files_written\":',      coalesce(string(activity('ACT_CopyData').output?.filesWritten), '0'), ',',\n    '\"file_path\":\"',     variables('sinkFilePath'), '\",',\n    '\"error_message\":\"\",',\n    '\"last_ingested_at\":\"', utcNow(), '\",',\n    '\"last_ingested_path\":\"', variables('sinkFilePath'), '\",',\n    '\"run_timestamp\":\"', utcNow(), '\",',\n    '\"run_id\":\"',        pipeline().RunId, '\"',\n  '}'))",
 									"type": "Expression"
 								},
 								"authentication": {
