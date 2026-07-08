@@ -101,7 +101,7 @@
 									"type": "Expression"
 								},
 								"body": {
-									"value": "@json(concat('{',\n  '\"dataset_id\":\"',    pipeline().parameters.p_id, '\",',\n  '\"status\":\"SKIPPED\",',\n  '\"etag\":\"',          variables('currentETag'), '\",',\n  '\"rows_copied\":0,',\n  '\"file_path\":\"\",',\n  '\"error_message\":\"\",',\n  '\"last_ingested_at\":\"', coalesce(activity('ACT_ReadLog').output.firstRow?.last_ingested_at, ''), '\",',\n'\"last_ingested_path\":\"', coalesce(activity('ACT_ReadLog').output.firstRow?.last_ingested_path, ''), '\",',\n  '\"run_timestamp\":\"', utcNow(), '\",',\n  '\"run_id\":\"',        pipeline().RunId, '\"',\n'}'))",
+									"value": "@json(concat('{',\n  '\"dataset_id\":\"',    pipeline().parameters.p_id, '\",',\n  '\"status\":\"SKIPPED\",',\n  '\"etag\":\"',          variables('currentETag'), '\",',\n  '\"rows_copied\":0,',\n  '\"file_path\":\"\",',\n  '\"error_message\":\"\",',\n  '\"last_ingested_at\":\"', coalesce(activity('ACT_ReadLog').output?.firstRow?.last_ingested_at, ''), '\",',\n'\"last_ingested_path\":\"', coalesce(activity('ACT_ReadLog').output?.firstRow?.last_ingested_path, ''), '\",',\n  '\"run_timestamp\":\"', utcNow(), '\",',\n  '\"run_id\":\"',        pipeline().RunId, '\"',\n'}'))",
 									"type": "Expression"
 								},
 								"authentication": {
