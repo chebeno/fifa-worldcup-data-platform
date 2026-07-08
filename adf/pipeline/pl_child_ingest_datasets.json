@@ -222,7 +222,7 @@
 									"x-ms-version": "2021-08-06"
 								},
 								"url": {
-									"value": "@concat('https://redactedstorage.blob.core.windows.net/staging/logs/', pipeline().parameters.p_id, '.json')",
+									"value": "@concat(pipeline().globalParameters.p_sadls_datamaieutic_dev_put,pipeline().globalParameters.p_sadls_container_datamaieutic_dev,'/logs/', pipeline().parameters.p_id, '.json')",
 									"type": "Expression"
 								},
 								"body": {
@@ -281,7 +281,7 @@
 									"Content-Type": "application/json"
 								},
 								"url": {
-									"value": "@concat(pipeline().globalParameters.p_sadls_datamaieutic_dev,'/',pipeline().globalParameters.p_sadls_container_datamaieutic_dev,'/logs/', pipeline().parameters.p_id, '.json')",
+									"value": "@concat(pipeline().globalParameters.p_sadls_datamaieutic_dev_put,'/',pipeline().globalParameters.p_sadls_container_datamaieutic_dev,'/logs/', pipeline().parameters.p_id, '.json')",
 									"type": "Expression"
 								},
 								"body": {
