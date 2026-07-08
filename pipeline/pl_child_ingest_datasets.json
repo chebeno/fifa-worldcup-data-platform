@@ -219,11 +219,10 @@
 								"headers": {
 									"x-ms-blob-type": "BlockBlob",
 									"Content-Type": "application/json",
-									"Content-Length": "0",
-									"x-ms-version": "2023-11-03"
+									"x-ms-version": "2021-08-06"
 								},
 								"url": {
-									"value": "@concat('https://redactedstorage.dfs.core.windows.net/staging/logs/', pipeline().parameters.p_id, '.json')",
+									"value": "@concat('https://redactedstorage.blob.core.windows.net/staging/logs/', pipeline().parameters.p_id, '.json')",
 									"type": "Expression"
 								},
 								"body": {
