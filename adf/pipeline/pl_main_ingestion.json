@@ -401,7 +401,25 @@
 									"referenceName": "pl_child_ingest_datasets",
 									"type": "PipelineReference"
 								},
-								"waitOnCompletion": true
+								"waitOnCompletion": true,
+								"parameters": {
+									"p_filename": {
+										"value": "@item().filename",
+										"type": "Expression"
+									},
+									"p_category": {
+										"value": "@item().category",
+										"type": "Expression"
+									},
+									"p_target_folder": {
+										"value": "@item().target_forlder",
+										"type": "Expression"
+									},
+									"p_source_base_url": {
+										"value": "@activity('ACT_ReadConfig').output.firstRow.pipeline_config.source_base_url",
+										"type": "Expression"
+									}
+								}
 							}
 						}
 					]
