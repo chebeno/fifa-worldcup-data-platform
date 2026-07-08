@@ -172,7 +172,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"ds_relative_url": {
-											"value": "@concat('/jfjelstul/worldcup/master/data-csv/', pipeline().parameters.p_filename)",
+											"value": "@concat(pipeline().globalParameters.p_github_relativ_path, pipeline().parameters.p_filename)",
 											"type": "Expression"
 										}
 									}
@@ -230,7 +230,10 @@
 								},
 								"authentication": {
 									"type": "MSI",
-									"resource": "https://storage.azure.com"
+									"resource": {
+										"value": "@pipeline().globalParameters.p_storage_resource",
+										"type": "Expression"
+									}
 								}
 							}
 						},
