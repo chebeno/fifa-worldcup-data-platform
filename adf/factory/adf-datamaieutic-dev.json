@@ -17,6 +17,10 @@
 			"p_github_relativ_path": {
 				"type": "string",
 				"value": "/jfjelstul/worldcup/master/data-csv/"
+			},
+			"p_sadls_datamaieutic_dev_put": {
+				"type": "string",
+				"value": "https://redactedstorage.blob.core.windows.net"
 			}
 		},
 		"trustModeClaimForMi": {
