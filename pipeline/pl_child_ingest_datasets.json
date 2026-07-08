@@ -94,7 +94,8 @@
 								"method": "PUT",
 								"headers": {
 									"x-ms-blob-type": "BlockBlob",
-									"Content-Type": "application/json"
+									"Content-Type": "application/json",
+									"x-ms-version": "2021-08-06"
 								},
 								"url": {
 									"value": "@concat(pipeline().globalParameters.p_sadls_datamaieutic_dev_put,'/',pipeline().globalParameters.p_sadls_container_datamaieutic_dev,'/logs/',pipeline().parameters.p_id,'.json')",
