@@ -92,10 +92,15 @@
 							"typeProperties": {
 								"method": "PUT",
 								"headers": {
-									"x-ms-blob-type": "BlockBlob"
+									"x-ms-blob-type": "BlockBlob",
+									"Content-Type": "application/json"
 								},
 								"url": {
 									"value": "@concat(pipeline().globalParameters.p_sadls_datamaieutic_dev,'/',pipeline().globalParameters.p_sadls_container_datamaieutic_dev,'/logs/',pipeline().parameters.p_id,'.json')",
+									"type": "Expression"
+								},
+								"body": {
+									"value": "@json(concat('{',\n  '\"dataset_id\":\"',    pipeline().parameters.p_id, '\",',\n  '\"status\":\"SKIPPED\",',\n  '\"etag\":\"',          variables('currentETag'), '\",',\n  '\"rows_copied\":0,',\n  '\"file_path\":\"\",',\n  '\"error_message\":\"\",',\n  '\"last_ingested_at\":\"', coalesce(activity('ACT_ReadLog').output.firstRow?.last_ingested_at, ''), '\",',\n'\"last_ingested_path\":\"', coalesce(activity('ACT_ReadLog').output.firstRow?.last_ingested_path, ''), '\",',\n  '\"run_timestamp\":\"', utcNow(), '\",',\n  '\"run_id\":\"',        pipeline().RunId, '\"',\n'}'))",
 									"type": "Expression"
 								},
 								"authentication": {
@@ -219,7 +224,7 @@
 									"type": "Expression"
 								},
 								"body": {
-									"value": "@json(concat('{',\n    '\"dataset_id\":\"',    pipeline().parameters.p_id, '\",',\n    '\"status\":\"INGESTED\",',\n    '\"etag\":\"',          variables('currentETag'), '\",',\n    '\"rows_copied\":',     string(activity('ACT_CopyData').output.rowsCopied), ',',\n    '\"file_path\":\"',     variables('sinkFilePath'), '\",',\n    '\"error_message\":\"\",',\n    '\"run_timestamp\":\"', utcNow(), '\",',\n    '\"run_id\":\"',        pipeline().RunId, '\"',\n  '}'))",
+									"value": "@json(concat('{',\n    '\"dataset_id\":\"',    pipeline().parameters.p_id, '\",',\n    '\"status\":\"INGESTED\",',\n    '\"etag\":\"',          variables('currentETag'), '\",',\n    '\"rows_copied\":',     string(activity('ACT_CopyData').output.rowsCopied), ',',\n    '\"file_path\":\"',     variables('sinkFilePath'), '\",',\n    '\"error_message\":\"\",',\n    '\"last_ingested_at\":\"', utcNow(), '\",',\n    '\"last_ingested_path\":\"', variables('sinkFilePath'), '\",',\n    '\"run_timestamp\":\"', utcNow(), '\",',\n    '\"run_id\":\"',        pipeline().RunId, '\"',\n  '}'))",
 									"type": "Expression"
 								},
 								"authentication": {
