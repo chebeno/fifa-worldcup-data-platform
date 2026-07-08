@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "reading config file",
+				"name": "ACT_ReadConfig",
 				"description": "Reading main config file for ingestion purpose",
 				"type": "Lookup",
 				"dependsOn": [],
@@ -46,7 +46,7 @@
 				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
-						"activity": "reading config file",
+						"activity": "ACT_ReadConfig",
 						"dependencyConditions": [
 							"Failed"
 						]
@@ -67,7 +67,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "reading config file",
+						"activity": "ACT_ReadConfig",
 						"dependencyConditions": [
 							"Succeeded"
 						]
