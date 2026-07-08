@@ -418,6 +418,18 @@
 									"p_source_base_url": {
 										"value": "@activity('ACT_ReadConfig').output.firstRow.pipeline_config.source_base_url",
 										"type": "Expression"
+									},
+									"p_github_api_base": {
+										"value": "@activity('ACT_ReadConfig').output.firstRow.pipeline_config.github_api_base",
+										"type": "Expression"
+									},
+									"p_adls_base_path": {
+										"value": "@activity('ACT_ReadConfig').output.firstRow.pipeline_config.adls_base_path",
+										"type": "Expression"
+									},
+									"p_id": {
+										"value": "@item().id",
+										"type": "Expression"
 									}
 								}
 							}
