@@ -430,6 +430,10 @@
 									"p_id": {
 										"value": "@item().id",
 										"type": "Expression"
+									},
+									"p_log_path": {
+										"value": "@activity('ACT_ReadConfig').output.firstRow.pipeline_config.log_path",
+										"type": "Expression"
 									}
 								}
 							}
