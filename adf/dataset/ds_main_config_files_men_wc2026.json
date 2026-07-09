@@ -1,0 +1,99 @@
+{
+	"name": "ds_main_config_files_men_wc2026",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sadatamaieutic_dev",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"container": {
+				"type": "string"
+			},
+			"dir": {
+				"type": "string"
+			},
+			"filename": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "ds_fifa_worldcup/config"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().dir",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().container",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"pipeline_config": {
+					"type": "object",
+					"properties": {
+						"version": {
+							"type": "string"
+						},
+						"source_base_url": {
+							"type": "string"
+						},
+						"github_api_base": {
+							"type": "string"
+						},
+						"adls_container": {
+							"type": "string"
+						},
+						"adls_base_path": {
+							"type": "string"
+						},
+						"log_path": {
+							"type": "string"
+						},
+						"parallelism": {
+							"type": "integer"
+						}
+					}
+				},
+				"datasets": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"id": {
+								"type": "string"
+							},
+							"filename": {
+								"type": "string"
+							},
+							"category": {
+								"type": "string"
+							},
+							"target_folder": {
+								"type": "string"
+							},
+							"active": {
+								"type": "boolean"
+							},
+							"last_sha": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
