@@ -31,8 +31,14 @@
 						"referenceName": "ds_main_config_files",
 						"type": "DatasetReference",
 						"parameters": {
-							"container": "staging",
-							"dir": "config_files",
+							"container": {
+								"value": "@pipeline().globalParameters.p_sadls_container_datamaieutic_dev",
+								"type": "Expression"
+							},
+							"dir": {
+								"value": "@pipeline().globalParameters.p_sadls_datamaieutic_config_dir",
+								"type": "Expression"
+							},
 							"filename": "main_ingestion_fifa_worldcup.json"
 						}
 					},
