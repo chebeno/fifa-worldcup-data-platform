@@ -13,7 +13,30 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "ds_main_config_file_men_wc2026",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@pipeline().globalParameters.p_sadls_container_datamaieutic_dev",
+								"type": "Expression"
+							}
+						}
+					}
+				}
 			}
 		],
 		"folder": {
