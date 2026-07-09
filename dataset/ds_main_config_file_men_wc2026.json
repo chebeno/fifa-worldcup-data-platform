@@ -1,5 +1,5 @@
 {
-	"name": "ds_main_config_files_men_wc2026",
+	"name": "ds_main_config_file_men_wc2026",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_sadatamaieutic_dev",
