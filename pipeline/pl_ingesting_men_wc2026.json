@@ -33,7 +33,12 @@
 							"container": {
 								"value": "@pipeline().globalParameters.p_sadls_container_datamaieutic_dev",
 								"type": "Expression"
-							}
+							},
+							"dir": {
+								"value": "@pipeline().globalParameters.p_sadls_datamaieutic_config_dir",
+								"type": "Expression"
+							},
+							"filename": "main_ingesting_fifa_men_worldcup_2026.json"
 						}
 					}
 				}
