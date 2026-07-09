@@ -4,11 +4,12 @@
 		"activities": [
 			{
 				"name": "ACT_ReadingConfig_2026",
+				"description": "Reading config file to ingest data ",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
-					"retry": 0,
+					"retry": 2,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
