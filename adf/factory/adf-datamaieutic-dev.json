@@ -21,6 +21,10 @@
 			"p_sadls_datamaieutic_dev_put": {
 				"type": "string",
 				"value": "https://redactedstorage.blob.core.windows.net"
+			},
+			"p_sadls_datamaieutic_config_dir": {
+				"type": "string",
+				"value": "config_files"
 			}
 		},
 		"trustModeClaimForMi": {
