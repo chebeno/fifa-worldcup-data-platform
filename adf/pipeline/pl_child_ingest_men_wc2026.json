@@ -50,6 +50,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"expression": {
+						"value": "@activity('ACT_CheckLogExists').output.exists",
+						"type": "Expression"
+					},
 					"ifFalseActivities": [
 						{
 							"name": "SET_LastETag_Empty",
