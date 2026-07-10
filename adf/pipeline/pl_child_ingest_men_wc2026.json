@@ -347,7 +347,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"ds_relative_url": {
-											"value": "@concat(pipeline().globalParameters.p_github_relativ_path, pipeline().parameters.p_filename)",
+											"value": "@concat(pipeline().globalParameters.p_github_relativ_path_2026, pipeline().parameters.p_filename)",
 											"type": "Expression"
 										}
 									}
