@@ -200,6 +200,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@activity('ACT_FilterActiveTrue').output",
+						"type": "Expression"
+					},
 					"batchCount": 5,
 					"activities": [
 						{
