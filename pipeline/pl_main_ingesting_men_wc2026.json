@@ -201,7 +201,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('ACT_FilterActiveTrue').output",
+						"value": "@activity('ACT_FilterActiveTrue').output.value",
 						"type": "Expression"
 					},
 					"isSequential": false,
