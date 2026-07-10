@@ -1,5 +1,5 @@
 {
-	"name": "pl_ingesting_men_wc2026",
+	"name": "pl_main_ingesting_men_wc2026",
 	"properties": {
 		"activities": [
 			{
@@ -45,7 +45,7 @@
 				}
 			},
 			{
-				"name": "Set variable1",
+				"name": "SET_Source_base_url",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -59,9 +59,165 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "source_base_url",
+					"value": {
+						"value": "@activity('ACT_ReadingConfig_2026').output.firstRow.pipeline_config.source_base_url",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SET_github_api_base",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "SET_Source_base_url",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "github_api_base",
+					"value": {
+						"value": "@activity('ACT_ReadingConfig_2026').output.firstRow.pipeline_config.github_api_base",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SET_adls_container",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "SET_github_api_base",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "adls_container",
+					"value": {
+						"value": "@activity('ACT_ReadingConfig_2026').output.firstRow.pipeline_config.adls_container",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SET_adls_base_path",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "SET_adls_container",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "adls_base_path",
+					"value": {
+						"value": "@activity('ACT_ReadingConfig_2026').output.firstRow.pipeline_config.adls_base_path",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SET_log_path",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "SET_adls_base_path",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "log_path",
+					"value": {
+						"value": "@activity('ACT_ReadingConfig_2026').output.firstRow.pipeline_config.log_path",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ACT_FilterActiveTrue",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "SET_log_path",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('ACT_ReadingConfig_2026').output.firstRow.datasets",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().active, true)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "ACT_FilterActiveTrue",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": []
 			}
 		],
+		"variables": {
+			"source_base_url": {
+				"type": "String"
+			},
+			"github_api_base": {
+				"type": "String"
+			},
+			"adls_container": {
+				"type": "String"
+			},
+			"adls_base_path": {
+				"type": "String"
+			},
+			"log_path": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "pl_fifa_worldcup"
 		},
