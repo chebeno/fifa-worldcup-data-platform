@@ -94,6 +94,17 @@
 				"type": "string"
 			}
 		},
+		"variables": {
+			"currentETag": {
+				"type": "String"
+			},
+			"sinkFilePath": {
+				"type": "String"
+			},
+			"lastETag": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "pl_fifa_worldcup"
 		},
