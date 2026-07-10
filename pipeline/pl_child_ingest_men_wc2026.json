@@ -50,6 +50,22 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"ifFalseActivities": [
+						{
+							"name": "SET_LastETag_Empty",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "lastETag",
+								"value": "''"
+							}
+						}
+					],
 					"ifTrueActivities": [
 						{
 							"name": "ACT_ReadLog",
