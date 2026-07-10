@@ -36,6 +36,36 @@
 						"type": "JsonReadSettings"
 					}
 				}
+			},
+			{
+				"name": "ACT_IfLogExists",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "ACT_CheckLogExists",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"ifTrueActivities": [
+						{
+							"name": "Lookup1",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": []
+						}
+					]
+				}
 			}
 		],
 		"parameters": {
