@@ -1,0 +1,24 @@
+{
+	"name": "pl_child_ingest_men_wc2026",
+	"properties": {
+		"activities": [
+			{
+				"name": "ACT_CheckLogExists",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			}
+		],
+		"folder": {
+			"name": "pl_fifa_worldcup"
+		},
+		"annotations": []
+	}
+}
