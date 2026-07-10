@@ -204,6 +204,7 @@
 						"value": "@activity('ACT_FilterActiveTrue').output",
 						"type": "Expression"
 					},
+					"isSequential": false,
 					"batchCount": 5,
 					"activities": [
 						{
@@ -219,7 +220,41 @@
 									"referenceName": "pl_child_ingest_men_wc2026",
 									"type": "PipelineReference"
 								},
-								"waitOnCompletion": true
+								"waitOnCompletion": true,
+								"parameters": {
+									"p_id": {
+										"value": "@item().id",
+										"type": "Expression"
+									},
+									"p_filename": {
+										"value": "@item().filename",
+										"type": "Expression"
+									},
+									"p_category": {
+										"value": "@item().category",
+										"type": "Expression"
+									},
+									"p_target_folder": {
+										"value": "@item().target_folder",
+										"type": "Expression"
+									},
+									"p_log_path": {
+										"value": "@activity('ACT_ReadingConfig_2026').output.firstRow.pipeline_config.log_path",
+										"type": "Expression"
+									},
+									"p_source_base_url": {
+										"value": "@activity('ACT_ReadingConfig_2026').output.firstRow.pipeline_config.source_base_url",
+										"type": "Expression"
+									},
+									"p_github_api_base": {
+										"value": "@activity('ACT_ReadingConfig_2026').output.firstRow.pipeline_config.github_api_base",
+										"type": "Expression"
+									},
+									"p_adls_base_path": {
+										"value": "@activity('ACT_ReadingConfig_2026').output.firstRow.pipeline_config.adls_base_path",
+										"type": "Expression"
+									}
+								}
 							}
 						}
 					]
