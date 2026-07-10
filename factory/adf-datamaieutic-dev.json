@@ -25,6 +25,10 @@
 			"p_sadls_datamaieutic_config_dir": {
 				"type": "string",
 				"value": "config_files"
+			},
+			"p_github_relativ_path_2026": {
+				"type": "string",
+				"value": "/mominullptr/FIFA-World-Cup-2026-Dataset/main/"
 			}
 		},
 		"trustModeClaimForMi": {
