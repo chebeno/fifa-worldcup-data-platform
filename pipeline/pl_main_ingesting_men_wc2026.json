@@ -200,6 +200,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"batchCount": 5,
 					"activities": [
 						{
 							"name": "ACT_ExecuteChild_men_wc2026",
