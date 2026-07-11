@@ -27,6 +27,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pl_main_ingesting_men_wc2026",
+						"type": "PipelineReference"
+					},
 					"waitOnCompletion": true
 				}
 			}
