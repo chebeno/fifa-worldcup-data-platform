@@ -17,7 +17,9 @@ steps:
     persistCredentials: true
 
   - script:  |
-      git remote add github https://github.com/chebeno/fifa-worldcup-data-platform.git
+      git remote add github https://chebeno:${GITHUB_PAT}@github.com/chebeno/fifa-worldcup-data-platform.git
       git push github --all --force
       git push github --tags --force
     displayName: 'Mirror vers GitHub'
+    env:
+      GITHUB_PAT: $(GITHUB_PAT)
