@@ -16,8 +16,8 @@
 			"recurrence": {
 				"frequency": "Day",
 				"interval": 1,
-				"startTime": "2026-07-11T00:54:00",
-				"endTime": "2026-07-25T23:30:00",
+				"startTime": "2026-07-10T20:45:00",
+				"endTime": "2026-07-25T23:45:00",
 				"timeZone": "Eastern Standard Time",
 				"schedule": {
 					"minutes": [
