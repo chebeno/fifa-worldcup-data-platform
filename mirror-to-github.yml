@@ -21,27 +21,3 @@ steps:
       git push github --all --force
       git push github --tags --force
       displayName: 'Mirror vers GitHub'
-      
-trigger:
-  branches:
-    include:
-      - '*'
-    exclude:
-      - adf_publish
-
-pool:
-  vmImage: 'ubuntu-latest'
-
-variables:
-  - group: github-mirror
-
-steps:
-  - checkout: self
-    fetchDepth: 0
-    persistCredentials: true
-
-  - script: |
-      git remote add github https://github.com/chebeno/fifa-worldcup-data-platform.git
-      git push github --all --force
-      git push github --tags --force
-      displayName: 'Mirror vers GitHub'
