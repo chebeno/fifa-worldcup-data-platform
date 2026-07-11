@@ -20,7 +20,9 @@ steps:
       git remote add github https://github.com/chebeno/fifa-worldcup-data-platform.git
       git push github --all --force
       git push github --tags --force
-    displayName: 'Mirror vers GitHub'trigger:
+      displayName: 'Mirror vers GitHub'
+      
+trigger:
   branches:
     include:
       - '*'
@@ -42,4 +44,4 @@ steps:
       git remote add github https://github.com/chebeno/fifa-worldcup-data-platform.git
       git push github --all --force
       git push github --tags --force
-    displayName: 'Mirror vers GitHub'
+      displayName: 'Mirror vers GitHub'
