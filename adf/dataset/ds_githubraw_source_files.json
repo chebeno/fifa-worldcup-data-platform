@@ -1,0 +1,33 @@
+{
+	"name": "ds_githubraw_source_files",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_httpserver_git_base_url",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"ds_relative_url": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "ds_fifa_worldcup/source"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": {
+					"value": "@dataset().ds_relative_url",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

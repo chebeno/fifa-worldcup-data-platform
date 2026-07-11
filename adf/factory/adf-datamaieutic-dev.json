@@ -1,6 +1,36 @@
 {
 	"name": "adf-datamaieutic-dev",
 	"properties": {
+		"globalParameters": {
+			"p_sadls_datamaieutic_dev": {
+				"type": "string",
+				"value": "https://redactedstorage.dfs.core.windows.net"
+			},
+			"p_storage_resource": {
+				"type": "string",
+				"value": "https://storage.azure.com"
+			},
+			"p_sadls_container_datamaieutic_dev": {
+				"type": "string",
+				"value": "staging"
+			},
+			"p_github_relativ_path": {
+				"type": "string",
+				"value": "/jfjelstul/worldcup/master/data-csv/"
+			},
+			"p_sadls_datamaieutic_dev_put": {
+				"type": "string",
+				"value": "https://redactedstorage.blob.core.windows.net"
+			},
+			"p_sadls_datamaieutic_config_dir": {
+				"type": "string",
+				"value": "config_files"
+			},
+			"p_github_relativ_path_2026": {
+				"type": "string",
+				"value": "/mominullptr/FIFA-World-Cup-2026-Dataset/main/"
+			}
+		},
 		"trustModeClaimForMi": {
 			"value": "Disabled",
 			"editable": true

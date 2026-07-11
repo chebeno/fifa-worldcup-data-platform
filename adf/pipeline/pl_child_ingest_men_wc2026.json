@@ -1,0 +1,521 @@
+{
+	"name": "pl_child_ingest_men_wc2026",
+	"properties": {
+		"activities": [
+			{
+				"name": "ACT_CheckLogExists",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 2,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_log_filestatus",
+						"type": "DatasetReference",
+						"parameters": {
+							"ds_log_filename": {
+								"value": "@concat(pipeline().parameters.p_id, '.json')",
+								"type": "Expression"
+							}
+						}
+					},
+					"fieldList": [
+						"exists"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "JsonReadSettings"
+					}
+				}
+			},
+			{
+				"name": "ACT_IfLogExists",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "ACT_CheckLogExists",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@activity('ACT_CheckLogExists').output.exists",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "SET_LastETag_Empty",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "lastETag",
+								"value": "''"
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "ACT_ReadLog",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 2,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "JsonSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "JsonReadSettings"
+									}
+								},
+								"dataset": {
+									"referenceName": "ds_log_filestatus",
+									"type": "DatasetReference",
+									"parameters": {
+										"ds_log_filename": {
+											"value": "@concat(pipeline().parameters.p_id, '.json')",
+											"type": "Expression"
+										}
+									}
+								}
+							}
+						},
+						{
+							"name": "SET_LastETag_FromLog",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "ACT_ReadLog",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "lastETag",
+								"value": {
+									"value": "@coalesce(activity('ACT_ReadLog').output?.firstRow?.etag, '')",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "ACT_GetRawETag",
+				"description": "Fetching the Etag of each file to capture changes",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "ACT_IfLogExists",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 2,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"headers": {
+						"User-Agent": " datamaieutic-adf",
+						"Accept": "application/json"
+					},
+					"url": {
+						"value": "@concat(pipeline().parameters.p_source_base_url,'/',pipeline().parameters.p_filename)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SET_CurrentETag",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ACT_GetRawETag",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "currentETag",
+					"value": {
+						"value": "@replace(replace(activity('ACT_GetRawETag').output.ADFWebActivityResponseHeaders.ETag, 'W/', ''), '\"', '')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ACT_LogFailed_ETag",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "ACT_GetRawETag",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 2,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "PUT",
+					"headers": {
+						"x-ms-blob-type": "BlockBlob",
+						"Content-Type": "application/json"
+					},
+					"url": {
+						"value": "@concat(pipeline().globalParameters.p_sadls_datamaieutic_dev,'/',pipeline().globalParameters.p_sadls_container_datamaieutic_dev,'/logs/', pipeline().parameters.p_id, '.json')",
+						"type": "Expression"
+					},
+					"body": {
+						"value": "@json(concat('{',\n  '\"dataset_id\":\"',    pipeline().parameters.p_id, '\",',\n  '\"status\":\"FAILED\",',\n  '\"etag\":\"',          variables('lastETag'), '\",',\n  '\"rows_copied\":0,',\n  '\"file_path\":\"\",',\n  '\"error_message\":\"',\n      replace(\n        replace(\n          replace(\n            coalesce(activity('ACT_GetRawETag').error?.message, 'Unknown error'),\n          '\\\\', '\\\\\\\\'),\n        '\"', '\\\"'),\n      decodeUriComponent('%0A'), ' '),\n  '\",',\n  '\"failed_activity\":\"ACT_GetRawETag\",',\n  '\"run_timestamp\":\"', utcNow(), '\",',\n  '\"run_id\":\"',        pipeline().RunId, '\"',\n'}'))",
+						"type": "Expression"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": {
+							"value": "@pipeline().globalParameters.p_storage_resource",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "ACT_CheckETag",
+				"description": "On compare l'ETag normalisé courant (currentETag) à la valeur stockée au dernier run (p_last_sha). not(equals(...)) s'active quand ils diffèrent → fichier modifié → branche True → copie.",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "SET_CurrentETag",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@not(equals(variables('currentETag'), variables('lastETag')))",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "ACT_LogSkipped",
+							"description": "Cette activité prouve que rien ne s'est passé. Un INGESTED prouve une copie. Un FAILED prouve un incident. Un SKIPPED prouve que le pipeline a vérifié et choisi de ne rien faire.",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 1,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "PUT",
+								"headers": {
+									"x-ms-blob-type": "BlockBlob",
+									"Content-Type": "application/json",
+									"x-ms-version": "2021-08-06"
+								},
+								"url": {
+									"value": "@concat(pipeline().globalParameters.p_sadls_datamaieutic_dev_put,'/',pipeline().globalParameters.p_sadls_container_datamaieutic_dev,'/logs/',pipeline().parameters.p_id,'.json')",
+									"type": "Expression"
+								},
+								"body": {
+									"value": "@json(concat('{',\n  '\"dataset_id\":\"',    pipeline().parameters.p_id, '\",',\n  '\"status\":\"SKIPPED\",',\n  '\"etag\":\"',          variables('currentETag'), '\",',\n  '\"rows_copied\":0,',\n  '\"file_path\":\"\",',\n  '\"error_message\":\"\",',\n  '\"last_ingested_at\":\"', coalesce(activity('ACT_ReadLog').output?.firstRow?.last_ingested_at, ''), '\",',\n'\"last_ingested_path\":\"', coalesce(activity('ACT_ReadLog').output?.firstRow?.last_ingested_path, ''), '\",',\n  '\"run_timestamp\":\"', utcNow(), '\",',\n  '\"run_id\":\"',        pipeline().RunId, '\"',\n'}'))",
+									"type": "Expression"
+								},
+								"authentication": {
+									"type": "MSI",
+									"resource": {
+										"value": "@pipeline().globalParameters.p_storage_resource",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "ACT_CopyData",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "SET_SinkFilePath",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 2,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"requestMethod": "GET"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_githubraw_source_files",
+									"type": "DatasetReference",
+									"parameters": {
+										"ds_relative_url": {
+											"value": "@concat(pipeline().globalParameters.p_github_relativ_path_2026, pipeline().parameters.p_filename)",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_adls_sink_files",
+									"type": "DatasetReference",
+									"parameters": {
+										"ds_folder": {
+											"value": "@concat(pipeline().parameters.p_adls_base_path,'/',pipeline().parameters.p_target_folder,'/',formatDateTime(utcNow(),'yyyy-MM-dd'))",
+											"type": "Expression"
+										},
+										"ds_file": {
+											"value": "@pipeline().parameters.p_filename",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "ACT_LogIngested",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "ACT_CopyData",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "PUT",
+								"headers": {
+									"x-ms-blob-type": "BlockBlob",
+									"Content-Type": "application/json",
+									"x-ms-version": "2021-08-06"
+								},
+								"url": {
+									"value": "@concat(pipeline().globalParameters.p_sadls_datamaieutic_dev_put,'/',pipeline().globalParameters.p_sadls_container_datamaieutic_dev,'/logs/', pipeline().parameters.p_id, '.json')",
+									"type": "Expression"
+								},
+								"body": {
+									"value": "@json(concat('{',\n    '\"dataset_id\":\"',    pipeline().parameters.p_id, '\",',\n    '\"status\":\"INGESTED\",',\n    '\"etag\":\"',          variables('currentETag'), '\",',\n    '\"rows_copied\":',     string(activity('ACT_CopyData').output?.rowsCopied), ',',\n    '\"data_written_bytes\":', coalesce(string(activity('ACT_CopyData').output?.dataWritten), '0'), ',',\n    '\"files_written\":',      coalesce(string(activity('ACT_CopyData').output?.filesWritten), '0'), ',',\n    '\"file_path\":\"',     variables('sinkFilePath'), '\",',\n    '\"error_message\":\"\",',\n    '\"last_ingested_at\":\"', utcNow(), '\",',\n    '\"last_ingested_path\":\"', variables('sinkFilePath'), '\",',\n    '\"run_timestamp\":\"', utcNow(), '\",',\n    '\"run_id\":\"',        pipeline().RunId, '\"',\n  '}'))",
+									"type": "Expression"
+								},
+								"authentication": {
+									"type": "MSI",
+									"resource": {
+										"value": "@pipeline().globalParameters.p_storage_resource",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "SET_SinkFilePath",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "sinkFilePath",
+								"value": {
+									"value": "@concat(pipeline().parameters.p_adls_base_path, '/',\n                pipeline().parameters.p_target_folder, '/',\n                formatDateTime(utcNow(),'yyyy-MM-dd'), '/',\n                pipeline().parameters.p_filename)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "ACT_LogFailed_Copy",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "ACT_CopyData",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "PUT",
+								"headers": {
+									"x-ms-blob-type": "BlockBlob",
+									"Content-Type": "application/json"
+								},
+								"url": {
+									"value": "@concat(pipeline().globalParameters.p_sadls_datamaieutic_dev_put,'/',pipeline().globalParameters.p_sadls_container_datamaieutic_dev,'/logs/', pipeline().parameters.p_id, '.json')",
+									"type": "Expression"
+								},
+								"body": {
+									"value": "@json(concat('{',\n  '\"dataset_id\":\"',    pipeline().parameters.p_id, '\",',\n  '\"status\":\"FAILED\",',\n  '\"etag\":\"',          variables('lastETag'), '\",',\n  '\"rejected_etag\":\"', variables('currentETag'), '\",',\n  '\"rows_copied\":0,',\n  '\"file_path\":\"\",',\n  '\"error_message\":\"',\n      replace(\n        replace(\n          replace(\n            coalesce(activity('ACT_CopyData').error?.message, 'Unknown error'),\n          '\\\\', '\\\\\\\\'),\n        '\"', '\\\"'),\n      decodeUriComponent('%0A'), ' '),\n  '\",',\n  '\"failed_activity\":\"ACT_CopyData\",',\n  '\"run_timestamp\":\"', utcNow(), '\",',\n  '\"run_id\":\"',        pipeline().RunId, '\"',\n'}'))",
+									"type": "Expression"
+								},
+								"authentication": {
+									"type": "MSI",
+									"resource": {
+										"value": "@pipeline().globalParameters.p_storage_resource",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"p_id": {
+				"type": "string"
+			},
+			"p_filename": {
+				"type": "string"
+			},
+			"p_category": {
+				"type": "string"
+			},
+			"p_target_folder": {
+				"type": "string"
+			},
+			"p_log_path": {
+				"type": "string"
+			},
+			"p_source_base_url": {
+				"type": "string"
+			},
+			"p_github_api_base": {
+				"type": "string"
+			},
+			"p_adls_base_path": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"currentETag": {
+				"type": "String"
+			},
+			"sinkFilePath": {
+				"type": "String"
+			},
+			"lastETag": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "pl_fifa_worldcup"
+		},
+		"annotations": []
+	}
+}

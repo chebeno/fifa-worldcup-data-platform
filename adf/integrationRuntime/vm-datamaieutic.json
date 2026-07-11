@@ -1,0 +1,7 @@
+{
+	"name": "vm-datamaieutic",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "virtual machin hosted in my mac to support shir"
+	}
+}
