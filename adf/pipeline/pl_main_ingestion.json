@@ -46,29 +46,6 @@
 				}
 			},
 			{
-				"name": "WebHook1",
-				"type": "WebHook",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
-				"dependsOn": [
-					{
-						"activity": "ACT_ReadConfig",
-						"dependencyConditions": [
-							"Failed"
-						]
-					}
-				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"method": "POST",
-					"timeout": "00:10:00"
-				}
-			},
-			{
 				"name": "SET_SourceBaseUrl",
 				"type": "SetVariable",
 				"dependsOn": [
