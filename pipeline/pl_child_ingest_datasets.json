@@ -25,9 +25,9 @@
 				"typeProperties": {
 					"method": "GET",
 					"headers": {
-						"User-Agent": " datamaieutic-adf",
-						"Accept": "application/json",
-						"Accept-Encoding": "identity"
+						"User-Agent": "datamaieutic-adf",
+						"Accept-Encoding": "identity",
+						"Range": "bytes=0-0"
 					},
 					"turnOffAsync": true,
 					"url": {
