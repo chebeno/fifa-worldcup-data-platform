@@ -4,6 +4,7 @@ trigger:
       - '*'
     exclude:
       - adf_publish
+      - main
 
 pool:
   vmImage: 'ubuntu-latest'
