@@ -2,8 +2,8 @@ trigger:
   branches:
     include:
       - '*'
-#    exclude:
-#      - adf_publish
+    exclude:
+      - adf_publish
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -17,8 +17,13 @@ steps:
     persistCredentials: true
 
   - script:  |
+      # 1. Fetch explicite de TOUTES les branches DevOps
+      git fetch origin '+refs/heads/*:refs/remotes/origin/*'
       git remote add github https://chebeno:${GITHUB_PAT}@github.com/chebeno/fifa-worldcup-data-platform.git
-      git push github --all --force
+       # 2. Push par refspec : refs distantes → branches GitHub
+      #    (fonctionne depuis un detached HEAD, aucune branche locale requise)
+      git push github 'refs/remotes/origin/*:refs/heads/*' --force
+      #git push github --all --force
       git push github --tags --force
     displayName: 'Mirror vers GitHub'
     env:
