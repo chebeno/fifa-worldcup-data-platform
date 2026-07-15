@@ -30,7 +30,7 @@ steps:
       #    variable group — jamais en dur dans ce YAML, lui aussi versionné !)
       cat > /tmp/redactions.txt <<EOF
       ${AZ_TENANT_ID}==>REDACTED-TENANT-ID
-      ${AZ_SUB_ID}==>REDACTED-SUBSCRIPTION-ID
+      ${AZ_PRINCIPAL_ID}==>REDACTED-PRINCIPAL-ID
       EOF
 
       # 3. Réécrire TOUT l'historique de TOUTES les branches
