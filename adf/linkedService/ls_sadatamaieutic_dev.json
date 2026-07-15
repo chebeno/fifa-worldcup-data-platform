@@ -10,7 +10,7 @@
 		"annotations": [],
 		"type": "AzureBlobFS",
 		"typeProperties": {
-			"url": "https://redactedstorage.dfs.core.windows.net/"
+			"url": "@{linkedService().storage_account}"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/linkedservices"
