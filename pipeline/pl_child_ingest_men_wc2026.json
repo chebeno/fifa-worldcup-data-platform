@@ -30,6 +30,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -158,7 +159,8 @@
 					"method": "GET",
 					"headers": {
 						"User-Agent": " datamaieutic-adf",
-						"Accept": "application/json"
+						"Accept-Encoding": "identity",
+						"Range": "bytes=0-0"
 					},
 					"url": {
 						"value": "@concat(pipeline().parameters.p_source_base_url,'/',pipeline().parameters.p_filename)",
