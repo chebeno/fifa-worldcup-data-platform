@@ -31,6 +31,7 @@ steps:
       cat > /tmp/redactions.txt <<EOF
       ${AZ_TENANT_ID}==>REDACTED-TENANT-ID
       ${AZ_PRINCIPAL_ID}==>REDACTED-PRINCIPAL-ID
+      ${AZ_STORAGE_ACCOUNT}==>redactedstorage
       EOF
 
       # 3. Réécrire TOUT l'historique de TOUTES les branches
@@ -47,3 +48,4 @@ steps:
       GITHUB_PAT: $(GITHUB_PAT)
       AZ_TENANT_ID: $(AZ_TENANT_ID)
       AZ_PRINCIPAL_ID: $(AZ_PRINCIPAL_ID)
+      AZ_STORAGE_ACCOUNT: $(AZ_STORAGE_ACCOUNT)
