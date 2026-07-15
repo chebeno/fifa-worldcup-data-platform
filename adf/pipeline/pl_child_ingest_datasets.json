@@ -25,9 +25,11 @@
 				"typeProperties": {
 					"method": "GET",
 					"headers": {
-						"User-Agent": " datamaieutic-adf",
-						"Accept": "application/json"
+						"User-Agent": "datamaieutic-adf",
+						"Accept-Encoding": "identity",
+						"Range": "bytes=0-0"
 					},
+					"turnOffAsync": true,
 					"url": {
 						"value": "@concat(pipeline().parameters.p_source_base_url,'/',pipeline().parameters.p_filename)",
 						"type": "Expression"
