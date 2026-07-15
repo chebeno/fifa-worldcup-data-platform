@@ -4,27 +4,46 @@ trigger:
       - '*'
     exclude:
       - adf_publish
-      - main
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  - group: github-mirror
+  - group: github-mirror    # contient GITHUB_PAT, AZ_TENANT_ID, AZ_SUB_ID
 
 steps:
   - checkout: self
     fetchDepth: 0
     persistCredentials: true
 
-  - script:  |
-      # 1. Fetch explicite de TOUTES les branches DevOps
+  - script: |
+      pip install git-filter-repo
+
+      # 1. Récupérer toutes les branches et les matérialiser en local
+      #    (filter-repo ne réécrit que les refs locales)
       git fetch origin '+refs/heads/*:refs/remotes/origin/*'
+      for b in $(git for-each-ref --format='%(refname:lstrip=3)' refs/remotes/origin | grep -v '^HEAD$'); do
+        git branch -f "$b" "origin/$b"
+      done
+
+      # 2. Fichier de règles de caviardage (les valeurs viennent du
+      #    variable group — jamais en dur dans ce YAML, lui aussi versionné !)
+      cat > /tmp/redactions.txt <<EOF
+      ${AZ_TENANT_ID}==>REDACTED-TENANT-ID
+      ${AZ_SUB_ID}==>REDACTED-SUBSCRIPTION-ID
+      EOF
+
+      # 3. Réécrire TOUT l'historique de TOUTES les branches
+      git filter-repo --replace-text /tmp/redactions.txt --force
+
+      # 4. filter-repo supprime les remotes par sécurité — on rajoute github
       git remote add github https://chebeno:${GITHUB_PAT}@github.com/chebeno/fifa-worldcup-data-platform.git
-       # 2. Push par refspec : refs distantes → branches GitHub
-      #    (fonctionne depuis un detached HEAD, aucune branche locale requise)
-      git push github 'refs/remotes/origin/*:refs/heads/*' --force
+
+      # 5. Push des branches locales réécrites
+      git push github 'refs/heads/*:refs/heads/*' --force
       git push github --tags --force
-    displayName: 'Mirror vers GitHub'
+    displayName: 'Mirror assaini vers GitHub'
     env:
       GITHUB_PAT: $(GITHUB_PAT)
+      AZ_TENANT_ID: $(AZ_TENANT_ID)
+      AZ_SUB_ID: REDACTED-SUBSCRIPTION-ID
