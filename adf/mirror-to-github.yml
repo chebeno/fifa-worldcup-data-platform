@@ -23,7 +23,6 @@ steps:
        # 2. Push par refspec : refs distantes → branches GitHub
       #    (fonctionne depuis un detached HEAD, aucune branche locale requise)
       git push github 'refs/remotes/origin/*:refs/heads/*' --force
-      #git push github --all --force
       git push github --tags --force
     displayName: 'Mirror vers GitHub'
     env:
