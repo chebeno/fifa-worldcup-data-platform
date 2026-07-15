@@ -9,7 +9,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  - group: github-mirror    # contient GITHUB_PAT, AZ_TENANT_ID, AZ_SUB_ID
+  - group: github-mirror    # contient GITHUB_PAT, AZ_TENANT_ID, AZ_PRINCIPAL_ID
 
 steps:
   - checkout: self
@@ -46,4 +46,4 @@ steps:
     env:
       GITHUB_PAT: $(GITHUB_PAT)
       AZ_TENANT_ID: $(AZ_TENANT_ID)
-      AZ_SUB_ID: REDACTED-SUBSCRIPTION-ID
+      AZ_PRINCIPAL_ID: $(AZ_PRINCIPAL_ID)
