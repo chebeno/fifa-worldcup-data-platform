@@ -2,8 +2,8 @@ trigger:
   branches:
     include:
       - '*'
-    exclude:
-      - adf_publish
+#    exclude:
+#      - adf_publish
 
 pool:
   vmImage: 'ubuntu-latest'
