@@ -1,3 +1,4 @@
+# I use this YAML file to mirror my project versioned on Azure DevOps
 trigger:
   branches:
     include:
