@@ -2,7 +2,7 @@
 
 > **Zero tokens · Zero secrets · Zero Databricks at ingestion · 100% idempotent**
 >
-> An end-to-end data platform on Azure - parameterized ADF ingestion, Medallion architecture, DLT, Unity Catalog governance and ML — built on 90+ years of FIFA World Cup data (1930–2026).
+> An end-to-end data platform on Azure - parameterized ADF ingestion, Medallion architecture, DLT, Unity Catalog governance and ML - built on 90+ years of FIFA World Cup data (1930–2026).
 
 A portfolio project by [**datamaieutic**](www.linkedin.com/in/ben-noché) — every component is documented with the *why* behind each architecture decision, including **the real errors encountered** and their fixes. Because a pipeline that works on the first try teaches nobody anything.
 
@@ -40,7 +40,7 @@ AI/BI Dashboards · MLflow - 2026 predictions       ← UC6
 | Decision | Choice | Why |
 |---|---|---|
 | Change detection | **Anonymous ETag** from the raw CDN (`GET` + `Range: bytes=0-0`) | No PAT, no 60 req/h GitHub API limit, 1 byte transferred |
-| Configuration | `ingestion_config.json` — **purely declarative** | Versioned in Git — states *what* to ingest, never the state |
+| Configuration | `ingestion_config.json` — **purely declarative** | Versioned in Git - states *what* to ingest, never the state |
 | State | `logs/{id}.json` — **one file per dataset** | Parallel ForEach concurrency eliminated *by design* |
 | Orchestration | Minimal master → **autonomous child** in 3 phases | The child reads its own state, decides, acts, journals - 100% testable in isolation |
 | Copy | **Binary** (byte-to-byte) | Bronze = the raw truth; counting rows is Silver's job |
@@ -66,7 +66,7 @@ PHASE 3 · DECIDE AND ACT     ETag ≠ lastETag ? → binary Copy + INGESTED log
 | `SKIPPED` | the same one (timestamp refreshed) | SKIPPED again if unchanged |
 | `FAILED` | **the old one, preserved** | re-detects the gap → **retries on its own** |
 
-Copy failed → the old ETag stays in place → the next run retries automatically. **Self-healing without a single line of retry code.** The rejected new ETag is journaled separately (`rejected_etag`) for diagnostics — never in the decision path.
+Copy failed → the old ETag stays in place → the next run retries automatically. **Self-healing without a single line of retry code.** The rejected new ETag is journaled separately (`rejected_etag`) for diagnostics, never in the decision path.
 
 ### Idempotency cycle validated in production
 
@@ -87,7 +87,7 @@ Nobody documents them. Everybody hits them.
 | # | Error | Lesson |
 |---|---|---|
 | 1 | `MissingRequiredHeader` | **blob** endpoint (not dfs) for a single PUT + `x-ms-blob-type: BlockBlob` |
-| 2 | `property 'etag' doesn't exist` | `?.` handles a **missing** property, `coalesce` handles **null** — you need both |
+| 2 | `property 'etag' doesn't exist` | `?.` handles a **missing** property, `coalesce` handles **null** - you need both |
 | 3 | `rowsCopied = null` | Binary copy doesn't parse rows — log `dataWritten`, count in Silver |
 | 4 | `Bearer is not supported in this version` | `x-ms-version: 2021-08-06` is mandatory with Managed Identity - and propagate the fix to all 4 sibling activities |
 | 5 | `output is over limit (around 4MB)` | **The latent bug**: without `Range: bytes=0-0`, every GET downloaded the entire file - invisible while files stayed < 4 MB. *A passing test doesn't prove the mechanism works - it proves it hasn't failed yet.* |
@@ -99,7 +99,7 @@ Nobody documents them. Everybody hits them.
 Two complementary levels, validated in production:
 
 - **Metric alert** (`Failed pipeline runs` > 0) — wakes you up within 1-5 min
-- **Log Analytics alert** with `Split by dimension = Dataset` — the notification tells you *which* dataset failed, extracted from the `p_id` parameter via `parse_json(Parameters)` in `ADFPipelineRun`
+- **Log Analytics alert** with `Split by dimension = Dataset` - the notification tells you *which* dataset failed, extracted from the `p_id` parameter via `parse_json(Parameters)` in `ADFPipelineRun`
 - **Logic App → Teams**: on alert, it reads `bronze/logs/{dataset}.json` (Managed Identity, Reader role) and posts an adaptive card with the error, the `rejected_etag`, and a direct link to the run. Red card on failure, **green card on Resolved — with no human intervention**: self-healing made visible.
 
 ```kql
