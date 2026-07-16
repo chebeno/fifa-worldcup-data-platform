@@ -17,11 +17,11 @@ steps:
   - script: |
       pip install git-filter-repo
 
-      # 1. Matérialiser UNIQUEMENT main en branche locale
+      # 1. Commit ONLY “main” to a local branch
       git fetch origin '+refs/heads/main:refs/remotes/origin/main'
       git branch -f main origin/main
 
-      # 2. Règles de caviardage (valeurs depuis le variable group)
+      # 2. Redaction rules (values from the “group” variable)
       cat > /tmp/redactions.txt <<EOF
       ${AZ_TENANT_ID}==>REDACTED-TENANT-ID
       ${AZ_SUB_ID}==>REDACTED-SUBSCRIPTION-ID
@@ -29,22 +29,21 @@ steps:
       ${AZ_STORAGE_ACCOUNT}==>redactedstorage
       EOF
 
-      # 3. Réécrire l'historique de main seulement
+      # 3. Rewrite the history of “main” only
       git filter-repo --replace-text /tmp/redactions.txt --refs main --force
 
-      # 4. filter-repo supprime les remotes — on rajoute github
+      # 4. filter-repo removes remotes, we add github
       git remote add github https://chebeno:${GITHUB_PAT}@github.com/chebeno/fifa-worldcup-data-platform.git
 
-      # 5. Pousser main, et main seulement
+      # 5. Push only main
       git push github main:main --force
 
-      # 6. Nettoyage : supprimer sur GitHub toute autre branche résiduelle
-      #    (adf_publish et compagnie, poussées par les anciens runs)
+      # 6. Cleanup: delete any other remaining branches on GitHub (adf_publish and related branches, pushed by previous runs)
       for b in $(git ls-remote --heads github | awk '{print $2}' | sed 's|refs/heads/||' | grep -v '^main$'); do
-        echo "Suppression de la branche GitHub résiduelle : $b"
+        echo "Deleting the remaining GitHub branch : $b"
         git push github --delete "$b"
       done
-    displayName: 'Mirror main assaini vers GitHub'
+    displayName: 'Mirror main to GitHub'
     env:
       GITHUB_PAT: $(GITHUB_PAT)
       AZ_TENANT_ID: $(AZ_TENANT_ID)
