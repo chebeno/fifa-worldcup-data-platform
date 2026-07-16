@@ -167,4 +167,5 @@ This second repo is what makes the architecture earn its keep: **a daily-updated
 
 Bilingual FR/EN data engineering educational content built on the Socratic method: start from the question you ask yourself in front of your error screen.
 
-*"A pipeline that heals itself — let's build it together."* # ⚽ FIFA World Cup Data Platform
+*"A pipeline that heals itself — let's build it together."* 
+# ⚽ FIFA World Cup Data Platform
