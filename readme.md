@@ -17,7 +17,7 @@ GITHUB SOURCES - 2 open repos
    │  anonymous HTTP · change detection via ETag
    ▼
 ADF — Parameterized & idempotent ingestion         ← UC1 ✅ (this repo)
-   │  bronze/ (binary copy, dated partitions)
+   │  staging/ (binary copy, dated partitions)
    ▼
 Databricks DLT - Medallion Bronze → Silver → Gold  ← UC2 (in progress)
    │  AUTO CDC · @dlt.expect · SCD2
