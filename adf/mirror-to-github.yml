@@ -1,15 +1,13 @@
 trigger:
   branches:
     include:
-      - '*'
-    exclude:
-      - adf_publish
+      - main            # only main branch triggers the mirror 
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  - group: github-mirror    # contient GITHUB_PAT, AZ_TENANT_ID, AZ_PRINCIPAL_ID
+  - group: github-mirror # contains GITHUB_PAT, AZ_TENANT_ID, AZ_PRINCIPAL_ID
 
 steps:
   - checkout: self
@@ -19,33 +17,37 @@ steps:
   - script: |
       pip install git-filter-repo
 
-      # 1. Récupérer toutes les branches et les matérialiser en local
-      #    (filter-repo ne réécrit que les refs locales)
-      git fetch origin '+refs/heads/*:refs/remotes/origin/*'
-      for b in $(git for-each-ref --format='%(refname:lstrip=3)' refs/remotes/origin | grep -v '^HEAD$'); do
-        git branch -f "$b" "origin/$b"
-      done
+      # 1. Matérialiser UNIQUEMENT main en branche locale
+      git fetch origin '+refs/heads/main:refs/remotes/origin/main'
+      git branch -f main origin/main
 
-      # 2. Fichier de règles de caviardage (les valeurs viennent du
-      #    variable group — jamais en dur dans ce YAML, lui aussi versionné !)
+      # 2. Règles de caviardage (valeurs depuis le variable group)
       cat > /tmp/redactions.txt <<EOF
       ${AZ_TENANT_ID}==>REDACTED-TENANT-ID
+      ${AZ_SUB_ID}==>REDACTED-SUBSCRIPTION-ID
       ${AZ_PRINCIPAL_ID}==>REDACTED-PRINCIPAL-ID
       ${AZ_STORAGE_ACCOUNT}==>redactedstorage
       EOF
 
-      # 3. Réécrire TOUT l'historique de TOUTES les branches
-      git filter-repo --replace-text /tmp/redactions.txt --force
+      # 3. Réécrire l'historique de main seulement
+      git filter-repo --replace-text /tmp/redactions.txt --refs main --force
 
-      # 4. filter-repo supprime les remotes par sécurité — on rajoute github
+      # 4. filter-repo supprime les remotes — on rajoute github
       git remote add github https://chebeno:${GITHUB_PAT}@github.com/chebeno/fifa-worldcup-data-platform.git
 
-      # 5. Push des branches locales réécrites
-      git push github 'refs/heads/*:refs/heads/*' --force
-      git push github --tags --force
-    displayName: 'Mirror assaini vers GitHub'
+      # 5. Pousser main, et main seulement
+      git push github main:main --force
+
+      # 6. Nettoyage : supprimer sur GitHub toute autre branche résiduelle
+      #    (adf_publish et compagnie, poussées par les anciens runs)
+      for b in $(git ls-remote --heads github | awk '{print $2}' | sed 's|refs/heads/||' | grep -v '^main$'); do
+        echo "Suppression de la branche GitHub résiduelle : $b"
+        git push github --delete "$b"
+      done
+    displayName: 'Mirror main assaini vers GitHub'
     env:
       GITHUB_PAT: $(GITHUB_PAT)
       AZ_TENANT_ID: $(AZ_TENANT_ID)
+      AZ_SUB_ID: REDACTED-SUBSCRIPTION-ID
       AZ_PRINCIPAL_ID: $(AZ_PRINCIPAL_ID)
       AZ_STORAGE_ACCOUNT: $(AZ_STORAGE_ACCOUNT)
