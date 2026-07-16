@@ -5,6 +5,8 @@
 			{
 				"name": "Execute_worldcup_till_2022",
 				"type": "ExecutePipeline",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"secureInput": false
