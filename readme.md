@@ -1,5 +1,3 @@
-Initialized by Azure Data Factory
-
 # ⚽ FIFA World Cup Data Platform
 
 > **Zero tokens · Zero secrets · Zero Databricks at ingestion · 100% idempotent**
@@ -165,7 +163,7 @@ This second repo is what makes the architecture earn its keep: **a daily-updated
 
 ## 👤 Author
 
-**Ben N** — Data & Analytics Engineer · [**datamaieutic**](https://www.linkedin.com/in/bennoche)
+**Ben N** — Data & Analytics Engineer · [**datamaieutic**](www.linkedin.com/in/ben-noché)
 
 Bilingual FR/EN data engineering educational content built on the Socratic method: start from the question you ask yourself in front of your error screen.
 
