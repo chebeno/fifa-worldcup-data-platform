@@ -27,7 +27,7 @@ Unity Catalog - RBAC · lineage · masking           ← UC5
 AI/BI Dashboards · MLflow - 2026 predictions       ← UC6
 ```
 
-**A deliberate architecture boundary**: ADF orchestrates and journals the entire Bronze ingestion; Databricks is reserved exclusively for transformations from Silver onward. No cluster ever spins up to ingest a CSV.
+**A deliberate architecture boundary**: ADF orchestrates and journals the entire Staging ingestion; Databricks is reserved exclusively for transformations from Silver onward. No cluster ever spins up to ingest a CSV.
 
 ---
 
@@ -40,10 +40,10 @@ AI/BI Dashboards · MLflow - 2026 predictions       ← UC6
 | Decision | Choice | Why |
 |---|---|---|
 | Change detection | **Anonymous ETag** from the raw CDN (`GET` + `Range: bytes=0-0`) | No PAT, no 60 req/h GitHub API limit, 1 byte transferred |
-| Configuration | `ingestion_config.json` - **purely declarative** | Versioned in Git - states *what* to ingest, never the state |
+| Configuration | `main_ingestion_fifa_worldcup.json and main_ingesting_fifa_men_worldcup_2026.json` - **purely declarative** | Versioned in Git - states *what* to ingest, never the state |
 | State | `logs/{id}.json` - **one file per dataset** | Parallel ForEach concurrency eliminated *by design* |
 | Orchestration | Minimal master → **autonomous child** in 3 phases | The child reads its own state, decides, acts, journals - 100% testable in isolation |
-| Copy | **Binary** (byte-to-byte) | Bronze = the raw truth; counting rows is Silver's job |
+| Copy | **Binary** (byte-to-byte) | staging = the raw truth; counting rows is Silver's job |
 | Log writes | Web Activity `PUT` + **Managed Identity** (blob endpoint) | Zero SAS, zero secrets, a single HTTP call |
 
 ### The child pipeline's 3 phases
@@ -100,13 +100,29 @@ Two complementary levels, validated in production:
 
 - **Metric alert** (`Failed pipeline runs` > 0) — wakes you up within 1-5 min
 - **Log Analytics alert** with `Split by dimension = Dataset` - the notification tells you *which* dataset failed, extracted from the `p_id` parameter via `parse_json(Parameters)` in `ADFPipelineRun`
-- **Logic App → Teams**: on alert, it reads `bronze/logs/{dataset}.json` (Managed Identity, Reader role) and posts an adaptive card with the error, the `rejected_etag`, and a direct link to the run. Red card on failure, **green card on Resolved — with no human intervention**: self-healing made visible.
+- **Logic App → Teams**: on alert, it reads `staging/logs/{dataset}.json` (Managed Identity, Reader role) and posts an adaptive card with the error, the `rejected_etag`, and a direct link to the run. Red card on failure, **green card on Resolved — with no human intervention**: self-healing made visible.
 
 ```kql
 ADFPipelineRun
 | where Status == "Failed"
+| where PipelineName == "pl_master_worldcup"
 | extend p = parse_json(Parameters)
-| project TimeGenerated, Dataset = tostring(p.p_id), RunId, FailureType
+| project
+    TimeGenerated,
+    Dataset = tostring(p.p_id),
+    Fichier = tostring(p.p_filename),
+    RunId,
+    FailureType
+| join kind=leftouter (
+    ADFActivityRun
+    | where Status == "Failed"
+    | project
+        PipelineRunId,
+        Activite = ActivityName,
+        Erreur = substring(tostring(ErrorMessage), 0, 300)
+) on $left.RunId == $right.PipelineRunId
+| project TimeGenerated, Dataset, Fichier, Activite, Erreur, FailureType, RunId
+| order by TimeGenerated desc
 ```
 
 ---
