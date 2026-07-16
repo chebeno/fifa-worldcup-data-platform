@@ -40,8 +40,8 @@ AI/BI Dashboards · MLflow - 2026 predictions       ← UC6
 | Decision | Choice | Why |
 |---|---|---|
 | Change detection | **Anonymous ETag** from the raw CDN (`GET` + `Range: bytes=0-0`) | No PAT, no 60 req/h GitHub API limit, 1 byte transferred |
-| Configuration | `ingestion_config.json` — **purely declarative** | Versioned in Git - states *what* to ingest, never the state |
-| State | `logs/{id}.json` — **one file per dataset** | Parallel ForEach concurrency eliminated *by design* |
+| Configuration | `ingestion_config.json` - **purely declarative** | Versioned in Git - states *what* to ingest, never the state |
+| State | `logs/{id}.json` - **one file per dataset** | Parallel ForEach concurrency eliminated *by design* |
 | Orchestration | Minimal master → **autonomous child** in 3 phases | The child reads its own state, decides, acts, journals - 100% testable in isolation |
 | Copy | **Binary** (byte-to-byte) | Bronze = the raw truth; counting rows is Silver's job |
 | Log writes | Web Activity `PUT` + **Managed Identity** (blob endpoint) | Zero SAS, zero secrets, a single HTTP call |
