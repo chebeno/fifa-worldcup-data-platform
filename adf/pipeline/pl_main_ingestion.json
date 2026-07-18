@@ -234,56 +234,6 @@
 									}
 								}
 							}
-						},
-						{
-							"name": "ACT_ExecuteChild_copy1",
-							"type": "ExecutePipeline",
-							"dependsOn": [],
-							"policy": {
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "pl_child_ingest_datasets",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true,
-								"parameters": {
-									"p_filename": {
-										"value": "@item().filename",
-										"type": "Expression"
-									},
-									"p_category": {
-										"value": "@item().category",
-										"type": "Expression"
-									},
-									"p_target_folder": {
-										"value": "@item().target_folder",
-										"type": "Expression"
-									},
-									"p_source_base_url": {
-										"value": "@activity('ACT_ReadConfig').output.firstRow.pipeline_config.source_base_url",
-										"type": "Expression"
-									},
-									"p_github_api_base": {
-										"value": "@activity('ACT_ReadConfig').output.firstRow.pipeline_config.github_api_base",
-										"type": "Expression"
-									},
-									"p_adls_base_path": {
-										"value": "@activity('ACT_ReadConfig').output.firstRow.pipeline_config.adls_base_path",
-										"type": "Expression"
-									},
-									"p_id": {
-										"value": "@item().id",
-										"type": "Expression"
-									},
-									"p_log_path": {
-										"value": "@activity('ACT_ReadConfig').output.firstRow.pipeline_config.log_path",
-										"type": "Expression"
-									}
-								}
-							}
 						}
 					]
 				}
@@ -335,6 +285,8 @@
 		"folder": {
 			"name": "pl_fifa_worldcup"
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2026-07-12T11:44:43Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }

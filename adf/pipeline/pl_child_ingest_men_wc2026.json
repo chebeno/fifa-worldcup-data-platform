@@ -159,8 +159,7 @@
 					"method": "GET",
 					"headers": {
 						"User-Agent": " datamaieutic-adf",
-						"Accept-Encoding": "identity",
-						"Range": "bytes=0-0"
+						"Accept": "application/json"
 					},
 					"url": {
 						"value": "@concat(pipeline().parameters.p_source_base_url,'/',pipeline().parameters.p_filename)",
@@ -293,7 +292,7 @@
 					],
 					"ifTrueActivities": [
 						{
-							"name": "ACT_CopyData_wc2026",
+							"name": "ACT_CopyData",
 							"type": "Copy",
 							"dependsOn": [
 								{
@@ -377,7 +376,7 @@
 							"type": "WebActivity",
 							"dependsOn": [
 								{
-									"activity": "ACT_CopyData_wc2026",
+									"activity": "ACT_CopyData",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -403,7 +402,7 @@
 									"type": "Expression"
 								},
 								"body": {
-									"value": "@json(concat('{',\n    '\"dataset_id\":\"',    pipeline().parameters.p_id, '\",',\n    '\"status\":\"INGESTED\",',\n    '\"etag\":\"',          variables('currentETag'), '\",',\n    '\"rows_copied\":',     string(activity('ACT_CopyData_wc2026').output?.rowsCopied), ',',\n    '\"data_written_bytes\":', coalesce(string(activity('ACT_CopyData_wc2026').output?.dataWritten), '0'), ',',\n    '\"files_written\":',      coalesce(string(activity('ACT_CopyData_wc2026').output?.filesWritten), '0'), ',',\n    '\"file_path\":\"',     variables('sinkFilePath'), '\",',\n    '\"error_message\":\"\",',\n    '\"last_ingested_at\":\"', utcNow(), '\",',\n    '\"last_ingested_path\":\"', variables('sinkFilePath'), '\",',\n    '\"run_timestamp\":\"', utcNow(), '\",',\n    '\"run_id\":\"',        pipeline().RunId, '\"',\n  '}'))",
+									"value": "@json(concat('{',\n    '\"dataset_id\":\"',    pipeline().parameters.p_id, '\",',\n    '\"status\":\"INGESTED\",',\n    '\"etag\":\"',          variables('currentETag'), '\",',\n    '\"rows_copied\":',     string(activity('ACT_CopyData').output?.rowsCopied), ',',\n    '\"data_written_bytes\":', coalesce(string(activity('ACT_CopyData').output?.dataWritten), '0'), ',',\n    '\"files_written\":',      coalesce(string(activity('ACT_CopyData').output?.filesWritten), '0'), ',',\n    '\"file_path\":\"',     variables('sinkFilePath'), '\",',\n    '\"error_message\":\"\",',\n    '\"last_ingested_at\":\"', utcNow(), '\",',\n    '\"last_ingested_path\":\"', variables('sinkFilePath'), '\",',\n    '\"run_timestamp\":\"', utcNow(), '\",',\n    '\"run_id\":\"',        pipeline().RunId, '\"',\n  '}'))",
 									"type": "Expression"
 								},
 								"authentication": {
@@ -437,7 +436,7 @@
 							"type": "WebActivity",
 							"dependsOn": [
 								{
-									"activity": "ACT_CopyData_wc2026",
+									"activity": "ACT_CopyData",
 									"dependencyConditions": [
 										"Failed"
 									]
@@ -518,6 +517,8 @@
 		"folder": {
 			"name": "pl_fifa_worldcup"
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2026-07-11T00:56:27Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }
