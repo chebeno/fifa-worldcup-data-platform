@@ -281,6 +281,8 @@
 		"folder": {
 			"name": "pl_fifa_worldcup"
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2026-07-11T00:56:27Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }

@@ -1,5 +1,6 @@
 {
 	"name": "ls_httpserver_git_base_url",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "HttpServer",
