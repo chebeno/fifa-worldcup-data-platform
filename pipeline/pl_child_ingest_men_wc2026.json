@@ -159,7 +159,8 @@
 					"method": "GET",
 					"headers": {
 						"User-Agent": " datamaieutic-adf",
-						"Accept": "application/json"
+						"Accept": "application/json",
+						"Range": "bytes=0-0"
 					},
 					"url": {
 						"value": "@concat(pipeline().parameters.p_source_base_url,'/',pipeline().parameters.p_filename)",
@@ -360,7 +361,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"ds_folder": {
-											"value": "@concat(pipeline().parameters.p_adls_base_path,'/',pipeline().parameters.p_target_folder,'/',formatDateTime(utcNow(),'yyyy-MM-dd'))",
+											"value": "@concat(pipeline().parameters.p_adls_base_path,'/',pipeline().parameters.p_target_folder)",
 											"type": "Expression"
 										},
 										"ds_file": {
