@@ -186,7 +186,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"ds_folder": {
-											"value": "@concat(pipeline().parameters.p_adls_base_path,'/',pipeline().parameters.p_target_folder)",
+											"value": "@concat(pipeline().parameters.p_adls_base_path,'/',pipeline().parameters.p_target_folder,'/',formatDateTime(utcNow(),'yyyy-MM-dd'))",
 											"type": "Expression"
 										},
 										"ds_file": {
