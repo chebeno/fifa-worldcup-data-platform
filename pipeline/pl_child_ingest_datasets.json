@@ -27,7 +27,8 @@
 					"headers": {
 						"User-Agent": " datamaieutic-adf",
 						"Accept": "application/json",
-						"Range": "bytes=0-0"
+						"Range": "bytes=0-0",
+						"x-ms-version": "2021-08-06"
 					},
 					"url": {
 						"value": "@concat(pipeline().parameters.p_source_base_url,'/',pipeline().parameters.p_filename)",
@@ -458,7 +459,8 @@
 					"method": "PUT",
 					"headers": {
 						"x-ms-blob-type": "BlockBlob",
-						"Content-Type": "application/json"
+						"Content-Type": "application/json",
+						"x-ms-version": "2021-08-06"
 					},
 					"url": {
 						"value": "@concat(pipeline().globalParameters.p_sadls_datamaieutic_dev,'/',pipeline().globalParameters.p_sadls_container_datamaieutic_dev,'/logs/', pipeline().parameters.p_id, '.json')",
