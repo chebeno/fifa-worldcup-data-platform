@@ -22,7 +22,7 @@ steps:
       git fetch origin '+refs/heads/main:refs/remotes/origin/main'
       git branch -f main origin/main
 
-      # 2. Redaction rules (values from the “group” variable)
+      # 2. Rules (values from the “group” variable)
       cat > /tmp/redactions.txt <<EOF
       ${AZ_TENANT_ID}==>REDACTED-TENANT-ID
       ${AZ_SUB_ID}==>REDACTED-SUBSCRIPTION-ID
