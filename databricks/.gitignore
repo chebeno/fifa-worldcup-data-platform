@@ -1,0 +1,11 @@
+# Artefacts locaux
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# État Auto Loader — vit dans le Volume ADLS, jamais dans Git
+_schemas/
+_checkpoints/
+
+# Local DABs
+.databricks/
