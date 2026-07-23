@@ -23,7 +23,7 @@ steps:
       git branch -f main origin/main
 
       # 2. Rules (values from the "group" variables)
-      cat > /tmp/redactions.txt <<EOF
+      cat > /tmp/rules.txt <<EOF
       ${AZ_TENANT_ID}==>REDACTED-TENANT-ID
       ${AZ_SUB_ID}==>REDACTED-SUBSCRIPTION-ID
       ${AZ_PRINCIPAL_ID}==>REDACTED-PRINCIPAL-ID
@@ -31,7 +31,7 @@ steps:
       EOF
 
       # 3. Rewrite the history of “main” only
-      git filter-repo --replace-text /tmp/redactions.txt --refs main --force
+      git filter-repo --replace-text /tmp/rules.txt --refs main --force
 
       # 4. filter-repo removes remotes, we add github
       git remote add github https://chebeno:${GITHUB_PAT}@github.com/chebeno/fifa-worldcup-data-platform.git
