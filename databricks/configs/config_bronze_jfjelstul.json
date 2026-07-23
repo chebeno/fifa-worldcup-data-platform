@@ -1,0 +1,193 @@
+{
+  "datasets": [
+    {
+      "id": "tournaments",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/tournaments",
+      "target_table": "tournaments",
+      "active": true
+    },
+    {
+      "id": "confederations",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/confederations",
+      "target_table": "confederations",
+      "active": true
+    },
+    {
+      "id": "teams",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/teams",
+      "target_table": "teams",
+      "active": true
+    },
+    {
+      "id": "players",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/players",
+      "target_table": "players",
+      "active": true
+    },
+    {
+      "id": "managers",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/managers",
+      "target_table": "managers",
+      "active": true
+    },
+    {
+      "id": "referees",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/referees",
+      "target_table": "referees",
+      "active": true
+    },
+    {
+      "id": "stadiums",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/stadiums",
+      "target_table": "stadiums",
+      "active": true
+    },
+    {
+      "id": "matches",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/matches",
+      "target_table": "matches",
+      "active": true
+    },
+    {
+      "id": "awards",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/awards",
+      "target_table": "awards",
+      "active": true
+    },
+    {
+      "id": "qualified_teams",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/qualified_teams",
+      "target_table": "qualified_teams",
+      "active": true
+    },
+    {
+      "id": "squads",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/squads",
+      "target_table": "squads",
+      "active": true
+    },
+    {
+      "id": "manager_appointments",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/manager_appointments",
+      "target_table": "manager_appointments",
+      "active": true
+    },
+    {
+      "id": "referee_appointments",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/referee_appointments",
+      "target_table": "referee_appointments",
+      "active": true
+    },
+    {
+      "id": "team_appearances",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/team_appearances",
+      "target_table": "team_appearances",
+      "active": true
+    },
+    {
+      "id": "player_appearances",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/player_appearances",
+      "target_table": "player_appearances",
+      "active": true
+    },
+    {
+      "id": "manager_appearances",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/manager_appearances",
+      "target_table": "manager_appearances",
+      "active": true
+    },
+    {
+      "id": "referee_appearances",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/referee_appearances",
+      "target_table": "referee_appearances",
+      "active": true
+    },
+    {
+      "id": "goals",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/goals",
+      "target_table": "goals",
+      "active": true
+    },
+    {
+      "id": "penalty_kicks",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/penalty_kicks",
+      "target_table": "penalty_kicks",
+      "active": true
+    },
+    {
+      "id": "bookings",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/bookings",
+      "target_table": "bookings",
+      "active": true
+    },
+    {
+      "id": "substitutions",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/substitutions",
+      "target_table": "substitutions",
+      "active": true
+    },
+    {
+      "id": "host_countries",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/host_countries",
+      "target_table": "host_countries",
+      "active": true
+    },
+    {
+      "id": "tournament_stages",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/tournament_stages",
+      "target_table": "tournament_stages",
+      "active": true
+    },
+    {
+      "id": "groups",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/groups",
+      "target_table": "groups",
+      "active": true
+    },
+    {
+      "id": "group_standings",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/group_standings",
+      "target_table": "group_standings",
+      "active": true
+    },
+    {
+      "id": "tournament_standings",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/tournament_standings",
+      "target_table": "tournament_standings",
+      "active": true
+    },
+    {
+      "id": "award_winners",
+      "source_repo": "jfjelstul",
+      "staging_subpath": "raw_data/award_winners",
+      "target_table": "award_winners",
+      "active": true
+    }
+  ]
+}
