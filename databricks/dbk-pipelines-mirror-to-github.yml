@@ -1,0 +1,54 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - group: github-mirror
+
+steps:
+  - checkout: self
+    fetchDepth: 0
+    persistCredentials: true
+
+  - script: |
+      pip install git-filter-repo
+
+      # 1. Matérialiser main en branche locale
+      git fetch origin '+refs/heads/main:refs/remotes/origin/main'
+      git branch -f main origin/main
+
+      # 2. Règles de caviardage — vides aujourd'hui, actives dès les DABs
+      cat > /tmp/redactions.txt <<EOF
+      ${AZ_TENANT_ID}==>REDACTED-TENANT-ID
+      ${AZ_SUB_ID}==>REDACTED-SUBSCRIPTION-ID
+      ${AZ_PRINCIPAL_ID}==>REDACTED-PRINCIPAL-ID
+      ${AZ_STORAGE_ACCOUNT}==>redactedstorage
+      ${AZ_WORKSPACE_ID}==>REDACTED-WORKSPACE-ID
+      EOF
+
+      # 3. Réécrire l'historique de main
+      git filter-repo --replace-text /tmp/redactions.txt --refs main --force
+
+      # 4. filter-repo supprime les remotes
+      git remote add github https://chebeno:${GITHUB_PAT}@github.com/chebeno/fifa-databricks-platform.git
+
+      # 5. Pousser main uniquement
+      git push github main:main --force
+
+      # 6. Purger toute branche résiduelle sur GitHub
+      for b in $(git ls-remote --heads github | awk '{print $2}' | sed 's|refs/heads/||' | grep -v '^main$'); do
+        echo "Suppression de la branche GitHub résiduelle : $b"
+        git push github --delete "$b"
+      done
+    displayName: 'Mirror main assaini vers GitHub'
+    env:
+      GITHUB_PAT: $(GITHUB_PAT)
+      AZ_TENANT_ID: $(AZ_TENANT_ID)
+      AZ_SUB_ID: REDACTED-SUBSCRIPTION-ID
+      AZ_PRINCIPAL_ID: $(AZ_PRINCIPAL_ID)
+      AZ_STORAGE_ACCOUNT: $(AZ_STORAGE_ACCOUNT)
+      AZ_WORKSPACE_ID: $(AZ_WORKSPACE_ID)
