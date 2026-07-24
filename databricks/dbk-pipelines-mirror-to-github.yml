@@ -40,10 +40,10 @@ steps:
       git push github main:main --force
 
       # 6. Purger toute branche résiduelle sur GitHub
-      for b in $(git ls-remote --heads github | awk '{print $2}' | sed 's|refs/heads/||' | grep -v '^main$'); do
-        echo "Suppression de la branche GitHub résiduelle : $b"
-        git push github --delete "$b"
-      done
+      #for b in $(git ls-remote --heads github | awk '{print $2}' | sed 's|refs/heads/||' | grep -v '^main$'); do
+      #  echo "Suppression de la branche GitHub résiduelle : $b"
+      #  git push github --delete "$b"
+      #done
     displayName: 'Mirror main assaini vers GitHub'
     env:
       GITHUB_PAT: $(GITHUB_PAT)
