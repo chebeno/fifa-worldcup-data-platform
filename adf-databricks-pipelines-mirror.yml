@@ -1,0 +1,51 @@
+trigger:
+  branches:
+    include:
+      - main   # only main branch triggers the mirror 
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - group: github-mirror # contains GITHUB_PAT, AZ_TENANT_ID, AZ_PRINCIPAL_ID, AZ_STORAGE_ACCOUNT
+
+steps:
+  - checkout: self
+    fetchDepth: 0
+    persistCredentials: true
+
+  - script: |
+      pip install git-filter-repo
+
+      # 1. Commit ONLY “main” to a local branch
+      git fetch origin '+refs/heads/main:refs/remotes/origin/main'
+      git branch -f main origin/main
+
+      # 2. Redaction Rules (values from the "group" variables) : the value will hide the right one for security purpose since this repos is public
+      cat > /tmp/redactions.txt <<EOF
+      ${AZ_TENANT_ID}==>REDACTED-TENANT-ID
+      ${AZ_SUB_ID}==>REDACTED-SUBSCRIPTION-ID
+      ${AZ_PRINCIPAL_ID}==>REDACTED-PRINCIPAL-ID
+      ${AZ_STORAGE_ACCOUNT}==>redactedstorage
+      EOF
+      
+      # 3. Rewrite the history of “main” only
+      git filter-repo --replace-text /tmp/redactions.txt --refs main --force
+      
+      # 4. filter-repo removes remotes, we add github
+      git remote add github https://chebeno:${GITHUB_PAT}@github.com/chebeno/fifa-worldcup-data-platform.git
+      
+      # 5. Push only main
+      git push github main:main --force
+      
+      # 6. Cleanup: delete any other remaining branches on GitHub (adf_publish and related branches, pushed by previous runs)
+      for b in $(git ls-remote --heads github | awk '{print $2}' | sed 's|refs/heads/||' | grep -v '^main$'); do
+        git push github --delete "$b"
+      done
+    displayName: 'Mirror monorepo to GitHub'
+    env:
+      GITHUB_PAT: $(GITHUB_PAT)
+      AZ_TENANT_ID: $(AZ_TENANT_ID)
+      AZ_SUB_ID: REDACTED-SUBSCRIPTION-ID
+      AZ_PRINCIPAL_ID: $(AZ_PRINCIPAL_ID)
+      AZ_STORAGE_ACCOUNT: $(AZ_STORAGE_ACCOUNT)
