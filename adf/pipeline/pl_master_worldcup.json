@@ -4,6 +4,7 @@
 		"activities": [
 			{
 				"name": "Execute_worldcup_till_2022",
+				"description": "this pipeline ingest data from 1930 to 2022",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"policy": {
@@ -20,6 +21,7 @@
 			},
 			{
 				"name": "Execute_worldcup_2026",
+				"description": "this pipeline ingest data for worldcup 2026",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"policy": {
