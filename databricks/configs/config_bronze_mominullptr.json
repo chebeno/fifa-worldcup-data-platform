@@ -1,0 +1,88 @@
+{
+  "datasets": [
+    {
+      "id": "teams",
+      "source_repo": "mominullptr",
+      "staging_subpath": "raw_data_men_wc_2026/teams",
+      "target_table": "teams",
+      "active": true
+    },
+    {
+      "id": "venues",
+      "source_repo": "mominullptr",
+      "staging_subpath": "raw_data_men_wc_2026/venues",
+      "target_table": "venues",
+      "active": true
+    },
+    {
+      "id": "tournament_stages",
+      "source_repo": "mominullptr",
+      "staging_subpath": "raw_data_men_wc_2026/tournament_stages",
+      "target_table": "tournament_stages",
+      "active": true
+    },
+    {
+      "id": "referees",
+      "source_repo": "mominullptr",
+      "staging_subpath": "raw_data_men_wc_2026/referees",
+      "target_table": "referees",
+      "active": true
+    },
+    {
+      "id": "matches",
+      "source_repo": "mominullptr",
+      "staging_subpath": "raw_data_men_wc_2026/matches",
+      "target_table": "matches",
+      "active": true
+    },
+    {
+      "id": "matches_detailed",
+      "source_repo": "mominullptr",
+      "staging_subpath": "raw_data_men_wc_2026/matches_detailed",
+      "target_table": "matches_detailed",
+      "active": true
+    },
+    {
+      "id": "squads_and_players",
+      "source_repo": "mominullptr",
+      "staging_subpath": "raw_data_men_wc_2026/squads_and_players",
+      "target_table": "squads_and_players",
+      "active": true
+    },
+    {
+      "id": "match_events",
+      "source_repo": "mominullptr",
+      "staging_subpath": "raw_data_men_wc_2026/match_events",
+      "target_table": "match_events",
+      "active": true
+    },
+    {
+      "id": "match_team_stats",
+      "source_repo": "mominullptr",
+      "staging_subpath": "raw_data_men_wc_2026/match_team_stats",
+      "target_table": "match_team_stats",
+      "active": true
+    },
+    {
+      "id": "player_stats",
+      "source_repo": "mominullptr",
+      "staging_subpath": "raw_data_men_wc_2026/player_stats",
+      "target_table": "player_stats",
+      "active": true
+    },
+    {
+      "id": "match_prediction_features",
+      "source_repo": "mominullptr",
+      "staging_subpath": "raw_data_men_wc_2026/match_prediction_features",
+      "target_table": "match_prediction_features",
+      "active": true
+    },
+    {
+      "id": "match_lineups",
+      "source_repo": "mominullptr",
+      "staging_subpath": "raw_data_men_wc_2026/match_lineups",
+      "target_table": "match_lineups",
+      "active": true
+    }
+  ]
+}
