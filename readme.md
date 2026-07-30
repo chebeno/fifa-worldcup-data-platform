@@ -171,9 +171,9 @@ Two open sources, ingested by the same parameterized pipeline:
 
 **[`jfjelstul/worldcup`](https://github.com/jfjelstul/worldcup)** - the history. 27 CSV datasets covering every World Cup from 1930 to 2022: matches, goals, players, teams, referees, penalty kicks, awards.
 
-**[`mominullptr/FIFA-World-Cup-2026-Dataset`](https://github.com/mominullptr/FIFA-World-Cup-2026-Dataset)** - the present. A relational dataset for the 2026 tournament (June 11 - July 19), **updated daily throughout the competition**: the first-ever 48-team format (12 groups A-L), 1,248 players with market values, real match results, minute-by-minute events, xG, per-team match stats, and all 16 venues with coordinates and altitude. Zero synthetic data — every stat is sourced and traceable (CC0 license).
+**[`mominullptr/FIFA-World-Cup-2026-Dataset`](https://github.com/mominullptr/FIFA-World-Cup-2026-Dataset)** - the present. A relational dataset for the 2026 tournament (June 11 - July 19), **updated daily throughout the competition**: the first-ever 48-team format (12 groups A-L), 1,248 players with market values, real match results, minute-by-minute events, xG, per-team match stats, and all 16 venues with coordinates and altitude. Zero synthetic data - every stat is sourced and traceable (CC0 license).
 
-This second repo is what makes the architecture earn its keep: **a daily-updated source is exactly the use case ETag change detection was built for** — during the tournament, the pipeline detects and ingests new results every day, and SKIPs everything else. It also feeds UC6: the model trained on 90 years of history gets confronted with real 2026 results, with advanced features (xG, Elo ratings, stadium altitude) ready to use.
+This second repo is what makes the architecture earn its keep: **a daily-updated source is exactly the use case ETag change detection was built for** - during the tournament, the pipeline detects and ingests new results every day, and SKIPs everything else. It also feeds UC6: the model trained on 90 years of history gets confronted with real 2026 results, with advanced features (xG, Elo ratings, stadium altitude) ready to use.
 
 ---
 
