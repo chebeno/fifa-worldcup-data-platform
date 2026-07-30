@@ -3,7 +3,7 @@
     {
       "id": "teams",
       "source_repo": "mominullptr",
-      "staging_subpath": "raw_data_men_wc_2026/teams",
+      "staging_subpath": "raw_data_men_wc_2026/teams_2026",
       "target_table": "teams",
       "active": true
     },
@@ -31,7 +31,7 @@
     {
       "id": "matches",
       "source_repo": "mominullptr",
-      "staging_subpath": "raw_data_men_wc_2026/matches",
+      "staging_subpath": "raw_data_men_wc_2026/matches_2026",
       "target_table": "matches",
       "active": true
     },
