@@ -157,7 +157,7 @@ ADFPipelineRun
 | UC2 | Medallion Bronze→Silver→Gold - DLT, AUTO CDC, SCD2, `@dlt.expect` | 🔨 In progress |
 | UC3 | Terraform + DABs + Azure DevOps - decoupled IaC & CI/CD | 📋 Specified |
 | UC4 | Data Quality Framework - expectations + quarantine | 📋 Specified |
-| UC5 | Unity Catalog — RBAC, lineage, masking | 📋 Specified |
+| UC5 | Unity Catalog - RBAC, lineage, masking | 📋 Specified |
 | UC6 | ML - World Cup 2026 predictions, MLflow, Model Serving | 📋 Specified |
 | UC7 | Spark optimization - skew, salting, broadcast | 📋 Specified |
 | UC8 | Observability - freshness, volume, schema, lineage, distribution | 📋 Specified |
@@ -179,7 +179,7 @@ This second repo is what makes the architecture earn its keep: **a daily-updated
 
 ## 👤 Author
 
-**Ben N** — Data & Analytics Engineer · [**datamaieutic**](www.linkedin.com/in/ben-noché)
+**Ben N** - Data & Analytics Engineer · [**datamaieutic**](www.linkedin.com/in/ben-noché)
 
 Bilingual FR/EN data engineering educational content built on the Socratic method: start from the question you ask yourself in front of your error screen.
 
