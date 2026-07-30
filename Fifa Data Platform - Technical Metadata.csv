@@ -1,4 +1,4 @@
-﻿Table Name : award_winners;;;;;;;
+Table Name : award_winners;;;;;;;
 Column;Type;_is_key;Type_key;comments;source;;
 key_id;int;yes;PK;;jfjelstul;;
 tournament_id;string;yes;FK;reference tournament;jfjelstul;;
