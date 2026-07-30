@@ -4,7 +4,7 @@
 >
 > An end-to-end data platform on Azure - parameterized ADF ingestion, Medallion architecture, DLT, Unity Catalog governance and ML - built on 90+ years of FIFA World Cup data (1930–2026).
 
-A portfolio project by [**datamaieutic**](www.linkedin.com/in/ben-noché) — every component is documented with the *why* behind each architecture decision, including **the real errors encountered** and their fixes. Because a pipeline that works on the first try teaches nobody anything.
+A portfolio project by [**datamaieutic**](www.linkedin.com/in/ben-noché) - every component is documented with the *why* behind each architecture decision, including **the real errors encountered** and their fixes. Because a pipeline that works on the first try teaches nobody anything.
 
 ---
 
